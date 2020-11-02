@@ -1,12 +1,31 @@
 # Use root/example as user/password credentials
 version: '3.1'
 
+networks:
+  node-rpg-network:
+    driver: bridge
+
 services:
-  mongo:
+  db:
     image: mongo
+    container_name: db-server
     environment:
-        MONGO_INITDB_DATABASE: node-rpg
-    #   MONGO_INITDB_ROOT_USERNAME: lucio
-    #   MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_DATABASE: node-rpg
+      MONGO_INITDB_ROOT_USERNAME: docker
+      MONGO_INITDB_ROOT_PASSWORD: docker
     ports:
       - 27017:27017
+    networks:
+      - node-rpg-network
+
+  db-test:
+    image: mongo
+    container_name: db-server-testing
+    environment:
+      MONGO_INITDB_DATABASE: node-rpg-test
+      MONGO_INITDB_ROOT_USERNAME: docker
+      MONGO_INITDB_ROOT_PASSWORD: docker
+    ports:
+      - 27018:27017
+    networks:
+      - node-rpg-network
