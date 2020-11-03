@@ -1,4 +1,4 @@
-import app from './app'
-import './database'
+import app from './app';
+import './database';
 
-app.listen(3333, () => console.log('Running server on port 3333'))
+app.listen(3333, () => console.log('Running server on port 3333'));
