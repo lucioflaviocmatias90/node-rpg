@@ -18,7 +18,7 @@ class UserController {
       name, email, password, gender, birthday,
     });
     const service = new AuthService();
-    const { data, iat, exp } = service.verify(token);
+    const decoded = service.verify(token);
 
     return res.json({ user, decoded });
   }
