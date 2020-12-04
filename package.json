@@ -6,6 +6,7 @@
   "author": "Lucio Flavio C Matias <lucioflavio.cmatias90@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev:server": "cd ./server && yarn dev"
+    "dev:server": "cd ./server && yarn dev",
+    "test:server": "cd ./server && yarn test"
   }
 }

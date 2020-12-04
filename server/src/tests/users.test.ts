@@ -2,9 +2,9 @@ import request from "supertest";
 import app from "../app";
 
 describe("Users testing...", () => {
-  it("get current user", async (done) => {
-    const response = await request(app).get("/users");
-    expect(response.status).toBe(200);
+  test("get current user", async (done) => {
+    const { status } = await request(app).get("/users");
+    expect(status).toBe(200);
     done();
   });
 
