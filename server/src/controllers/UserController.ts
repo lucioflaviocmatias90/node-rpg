@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import bcrypt from 'bcrypt';
 import User from "../models/User";
 
 class UserController {
@@ -11,7 +10,7 @@ class UserController {
   async store(request: Request, response: Response) {
     const { name, email, password, gender, birthday } = request.body;
 
-    const userExists = await User.findOne().where({ email });
+    const userExists = await User.findOne({ email });
 
     if (userExists) {
       return response.status(400).json({ 
@@ -22,12 +21,10 @@ class UserController {
       });
     }
 
-    const passwordHashed = await bcrypt.hash(password, 12);
-
     const user = await User.create({
       name,
       email,
-      password: passwordHashed,
+      password,
       gender,
       birthday,
     });
@@ -36,22 +33,32 @@ class UserController {
   }
 
   async destroy(request: Request, response: Response) {
-    const { id: userId } = request.params;
+    try {
+      const { id: userId } = request.params;
 
-    const userExists = await User.findById(userId);
+      const userExists = await User.findById(userId);
 
-    if (!userExists) {
+      if (!userExists) {
+        return response.status(400).json({ 
+          error: {
+            code: '001',
+            message: 'Usuário não encontrado'
+          }
+        });
+      }
+
+      await userExists.deleteOne();
+
+      return response.status(200).json({ message: 'Usuário excluído com sucesso' });
+    } catch (err) {
       return response.status(400).json({ 
         error: {
-          code: '001',
-          message: 'Usuário não encontrado'
+          code: '002',
+          message: 'Erro ao excluir o usuário',
+          err: err.message
         }
       });
     }
-
-    await userExists.deleteOne();
-
-    return response.status(200).json({ message: 'Usuário excluído com sucesso' });
   }
 }
 

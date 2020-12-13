@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
 import User from '../models/User';
-import Auth from '../services/Authentication';
+import Auth from '../services/Auth';
+import Hash from '../services/Hash';
 
 class SessionController {
   async store(request: Request, response: Response) {
     const { email, password } = request.body;
 
-    const userExists = await User.findOne().where({ email });
+    const userExists = await User.findOne({ email })
 
     if (!userExists) {
       return response.status(400).json({ 
@@ -18,7 +18,7 @@ class SessionController {
       });
     }
 
-    const result = await bcrypt.compare(password, userExists.password);
+    const result = await Hash.compare(password, userExists.password);
 
     if (!result) {
       return response.status(400).json({ 

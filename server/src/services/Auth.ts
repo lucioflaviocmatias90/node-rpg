@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import jwtConfig from '../config/jwt';
 
-class Authentication {
+class Auth {
   public config;
 
   public constructor() {
@@ -30,4 +30,4 @@ class Authentication {
   }
 }
 
-export default Authentication;
+export default Auth;

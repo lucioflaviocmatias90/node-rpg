@@ -1,4 +1,5 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
+import Hash from '../services/Hash'
 
 export interface IUser extends Document {
   name: string,
@@ -14,6 +15,10 @@ const UserSchema: Schema = new mongoose.Schema({
   password: String,
   gender: String,
   birthday: Date,
+});
+
+UserSchema.pre('save', async function(this: IUser, next: Function) {
+  this.password = await Hash.generate(this.password);
 });
 
 export default mongoose.model<IUser>('User', UserSchema);
