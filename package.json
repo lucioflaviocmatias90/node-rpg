@@ -6,7 +6,27 @@
   "author": "Lucio Flavio C Matias <lucioflavio.cmatias90@hotmail.com>",
   "license": "MIT",
   "scripts": {
+    "commit": "cz",
     "dev:server": "cd ./server && yarn dev",
     "test:server": "cd ./server && yarn test"
+  },
+  "private": true,
+  "devDependencies": {
+    "@commitlint/cli": "^11.0.0",
+    "@commitlint/config-conventional": "^11.0.0",
+    "commitizen": "^4.2.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^4.3.6"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
