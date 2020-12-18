@@ -1,16 +1,19 @@
 import { Request, Response } from "express";
+import { getRepository } from "typeorm";
 import { User } from "../models/User";
 
 class UserController {
   async index(request: Request, response: Response) {
-    const users = await User.find();
+    const userRepository = getRepository(User);
+    const users = await userRepository.find();
     return response.json({ users });
   }
 
   async store(request: Request, response: Response) {
     const { name, email, password, gender, birthday } = request.body;
+    const userRepository = getRepository(User);
 
-    const userExists = await User.findOne({ email });
+    const userExists = await userRepository.findOne({ where: { email } });
 
     if (userExists) {
       return response.status(400).json({
@@ -21,7 +24,7 @@ class UserController {
       });
     }
 
-    const user = await User.create({
+    const user = await userRepository.create({
       name,
       email,
       password,

@@ -8,7 +8,8 @@
   "scripts": {
     "commit": "cz",
     "dev:server": "cd ./server && yarn dev",
-    "test:server": "cd ./server && yarn test"
+    "test:server": "cd ./server && yarn test",
+    "migrations": "cd ./server && yarn typeorm migration:run"
   },
   "private": true,
   "devDependencies": {

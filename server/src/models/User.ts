@@ -4,9 +4,9 @@
 //   this.password = await Hash.generate(this.password);
 // });
 
-import {Entity} from "typeorm";
+import { Entity } from "typeorm";
 
-@Entity('users')
+@Entity("users")
 export class User {
   id: string;
   name: string;
