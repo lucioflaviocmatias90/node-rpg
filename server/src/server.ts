@@ -1,7 +1,7 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 
 import app from "./app";
-import "./database";
+import "./database/connection";
 
 // eslint-disable-next-line no-console
 app.listen(3333, () => console.log("Running server on port 3333"));

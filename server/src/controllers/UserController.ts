@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import User from "../models/User";
+import { User } from "../models/User";
 
 class UserController {
   async index(request: Request, response: Response) {
@@ -13,11 +13,11 @@ class UserController {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      return response.status(400).json({ 
+      return response.status(400).json({
         error: {
-          code: '001',
-          message: 'Email em uso'
-        }
+          code: "001",
+          message: "Email em uso",
+        },
       });
     }
 
@@ -39,24 +39,26 @@ class UserController {
       const userExists = await User.findById(userId);
 
       if (!userExists) {
-        return response.status(400).json({ 
+        return response.status(400).json({
           error: {
-            code: '001',
-            message: 'Usuário não encontrado'
-          }
+            code: "001",
+            message: "Usuário não encontrado",
+          },
         });
       }
 
       await userExists.deleteOne();
 
-      return response.status(200).json({ message: 'Usuário excluído com sucesso' });
+      return response
+        .status(200)
+        .json({ message: "Usuário excluído com sucesso" });
     } catch (err) {
-      return response.status(400).json({ 
+      return response.status(400).json({
         error: {
-          code: '002',
-          message: 'Erro ao excluir o usuário',
-          err: err.message
-        }
+          code: "002",
+          message: "Erro ao excluir o usuário",
+          err: err.message,
+        },
       });
     }
   }

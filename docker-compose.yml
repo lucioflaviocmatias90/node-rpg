@@ -7,25 +7,25 @@ networks:
 
 services:
   db:
-    image: mongo
-    container_name: db-server
+    image: postgres:latest
+    container_name: node-rpg-postgres
     environment:
-      MONGO_INITDB_DATABASE: node-rpg
-      MONGO_INITDB_ROOT_USERNAME: docker
-      MONGO_INITDB_ROOT_PASSWORD: docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_USER=docker
+      - POSTGRES_DB=node-rpg
     ports:
-      - 27017:27017
+      - "5432:5432"
     networks:
       - node-rpg-network
 
   db-test:
-    image: mongo
-    container_name: db-server-testing
+    image: postgres:latest
+    container_name: node-rpg-postgres-test
     environment:
-      MONGO_INITDB_DATABASE: node-rpg-test
-      MONGO_INITDB_ROOT_USERNAME: docker
-      MONGO_INITDB_ROOT_PASSWORD: docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_USER=docker
+      - POSTGRES_DB=node-rpg-test
     ports:
-      - 27018:27017
+      - "5433:5432"
     networks:
       - node-rpg-network
