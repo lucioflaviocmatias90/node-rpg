@@ -32,11 +32,25 @@ export class UsersSchema1608319777574 implements MigrationInterface {
             name: "birthday",
             type: "varchar",
           },
+          {
+            name: "created_at",
+            type: "timestamp",
+          },
+          {
+            name: "updated_at",
+            type: "timestamp",
+          },
+          {
+            name: "deleted_at",
+            type: "timestamp",
+          },
         ],
       }),
       true
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('users');
+  }
 }

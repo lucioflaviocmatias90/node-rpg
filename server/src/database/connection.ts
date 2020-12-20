@@ -1,8 +1,24 @@
 import { createConnection, Connection } from "typeorm";
-import config from "../config/database";
+import options from "../config/database";
 
-createConnection(config)
-  .then(() => console.log("Connected on database"))
-  .catch((err) =>
-    console.log(`An occurred error at connect on database: ${err.message}`)
-  );
+export default class Database {
+  public connection!: Connection;
+
+  async create() {
+    try {
+      this.connection = await createConnection(options);
+
+      console.log("Connected on database");
+    } catch (err) {
+      console.log(`An occurred error on connect to database: ${err.message}`)
+    }
+  }
+
+  async destroy() {
+    try {
+      await this.connection.close();
+    } catch (err) {
+      console.log(`An occurred error on disconnect to database: ${err.message}`)
+    }
+  }
+}

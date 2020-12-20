@@ -4,9 +4,19 @@ import { User } from "../models/User";
 
 class UserController {
   async index(request: Request, response: Response) {
-    const userRepository = getRepository(User);
-    const users = await userRepository.find();
-    return response.json({ users });
+    try {
+      const userRepository = getRepository(User);
+      const users = await userRepository.find();
+
+      return response.status(200).json({ users });
+    } catch (err) {
+      return response.status(400).json({
+        error: {
+          code: '001',
+          message: 'Usuários não encontrado'
+        }
+      });
+    }
   }
 
   async store(request: Request, response: Response) {

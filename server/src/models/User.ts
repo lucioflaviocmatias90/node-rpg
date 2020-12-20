@@ -4,25 +4,23 @@
 //   this.password = await Hash.generate(this.password);
 // });
 
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column } from "typeorm";
+import { Model } from './traits/Model'
 
 @Entity("users")
-export class User {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
-  @Column()
+export class User extends Model {
+  @Column('varchar')
   name: string;
 
-  @Column()
+  @Column('varchar')
   email: string;
 
-  @Column()
+  @Column('varchar')
   password: string;
 
-  @Column()
+  @Column('integer')
   gender: number;
 
-  @Column()
-  birthday: Date;
+  @Column('varchar')
+  birthday: Date;  
 }

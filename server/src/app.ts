@@ -1,11 +1,6 @@
-import * as dotenv from "dotenv";
-dotenv.config();
-dotenv.config({
-  path: process.env.NODE_ENV === "testing" ? ".env.testing" : ".env",
-});
-
 import express, { Application } from "express";
 import routes from "./routes";
+import Database from "./database/connection"
 
 class App {
   public app: Application;
@@ -13,6 +8,7 @@ class App {
   public constructor() {
     this.app = express();
 
+    this.database();
     this.middlewares();
     this.routes();
   }
@@ -23,6 +19,11 @@ class App {
 
   private routes() {
     this.app.use(routes);
+  }
+
+  private async database() {
+    const connection = new Database();
+    await connection.create();
   }
 }
 
