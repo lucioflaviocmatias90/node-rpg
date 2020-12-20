@@ -43,6 +43,7 @@ export class UsersSchema1608319777574 implements MigrationInterface {
           {
             name: "deleted_at",
             type: "timestamp",
+            isNullable: true
           },
         ],
       }),

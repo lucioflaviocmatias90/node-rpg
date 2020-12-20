@@ -18,7 +18,7 @@ export class User extends Model {
   @Column('varchar')
   password: string;
 
-  @Column('integer')
+  @Column('varchar')
   gender: number;
 
   @Column('varchar')

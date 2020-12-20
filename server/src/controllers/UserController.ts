@@ -20,29 +20,41 @@ class UserController {
   }
 
   async store(request: Request, response: Response) {
-    const { name, email, password, gender, birthday } = request.body;
-    const userRepository = getRepository(User);
+    try {
+      const { name, email, password, gender, birthday } = request.body;
+      const userRepository = getRepository(User);
 
-    const userExists = await userRepository.findOne({ where: { email } });
+      const userExists = await userRepository.findOne({ where: { email } });
 
-    if (userExists) {
+      if (userExists) {
+        return response.status(400).json({
+          error: {
+            code: "001",
+            message: "Email em uso",
+          },
+        });
+      }
+
+      const user = userRepository.create({
+        name,
+        email,
+        password,
+        gender,
+        birthday,
+      });
+
+      const newUser = await userRepository.save(user);
+
+      return response.status(200).json({ user: newUser });
+    } catch (err) {
       return response.status(400).json({
         error: {
-          code: "001",
-          message: "Email em uso",
+          code: "002",
+          message: "Erro ao cadastrar o usuário",
+          err: err.message
         },
       });
     }
-
-    const user = await userRepository.create({
-      name,
-      email,
-      password,
-      gender,
-      birthday,
-    });
-
-    return response.status(200).json({ user });
   }
 
   async destroy(request: Request, response: Response) {

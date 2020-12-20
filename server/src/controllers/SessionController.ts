@@ -37,7 +37,8 @@ class SessionController {
       return response.status(400).json({
         error: {
           code: '003',
-          message: 'Erro ao criar nova sessão'
+          message: 'Erro ao criar nova sessão',
+          err: err.message
         }
       });
     }
