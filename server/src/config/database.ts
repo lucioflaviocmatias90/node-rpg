@@ -7,7 +7,7 @@ const options: ConnectionOptions = {
   username: process.env.DB_USER as string,
   password: process.env.DB_PASSW as string,
   database: process.env.DB_DATABASE as string,
-  entities: ["./src/models/*.ts"],
+  entities: ["./src/app/models/*.ts"],
 };
 
 export default options;
