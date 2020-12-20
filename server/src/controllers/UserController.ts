@@ -8,7 +8,7 @@ class UserController {
       const userRepository = getRepository(User);
       const users = await userRepository.find();
 
-      return response.status(200).json({ users });
+      return response.status(200).json({ list: users });
     } catch (err) {
       return response.status(400).json({
         error: {
@@ -61,7 +61,8 @@ class UserController {
     try {
       const { id: userId } = request.params;
 
-      const userExists = await User.findById(userId);
+      const userRepository = getRepository(User);
+      const userExists = await userRepository.findOne(userId);
 
       if (!userExists) {
         return response.status(400).json({
@@ -72,7 +73,7 @@ class UserController {
         });
       }
 
-      await userExists.deleteOne();
+      await userRepository.delete(userId);
 
       return response
         .status(200)

@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { User } from '../models/User';
+import { getRepository } from "typeorm";
+
 import Auth from '../services/Auth';
 import Hash from '../services/Hash';
 
@@ -8,7 +10,8 @@ class SessionController {
     try {
       const { email, password } = request.body;
 
-      const userExists = await User.findOne({ email })
+      const userRepository = getRepository(User);
+      const userExists = await userRepository.findOne({ where: { email }});
 
       if (!userExists) {
         return response.status(400).json({ 

@@ -4,8 +4,9 @@
 //   this.password = await Hash.generate(this.password);
 // });
 
-import { Entity, Column } from "typeorm";
-import { Model } from './traits/Model'
+import { Entity, Column, BeforeInsert } from "typeorm";
+import { Model } from './traits/Model';
+import Hash from '../services/Hash'
 
 @Entity("users")
 export class User extends Model {
@@ -23,4 +24,9 @@ export class User extends Model {
 
   @Column('varchar')
   birthday: Date;  
+
+  @BeforeInsert()
+  async generateHash() {
+    this.password = await Hash.generate(this.password);
+  }
 }
