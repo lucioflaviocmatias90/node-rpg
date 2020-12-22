@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 import routes from "./routes";
-import Database from "./database/connection"
+import Connection from "./database/connection"
 
 class App {
   public app: Application;
@@ -22,8 +22,7 @@ class App {
   }
 
   private async database() {
-    const connection = new Database();
-    await connection.create();
+    await new Connection().create();
   }
 }
 

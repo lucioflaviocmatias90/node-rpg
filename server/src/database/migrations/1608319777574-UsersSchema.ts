@@ -10,7 +10,7 @@ export class UsersSchema1608319777574 implements MigrationInterface {
             name: "id",
             type: "varchar",
             generationStrategy: "uuid",
-            isPrimary: false,
+            isPrimary: true,
           },
           {
             name: "name",
