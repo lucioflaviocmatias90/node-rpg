@@ -12,6 +12,20 @@ export async function up(knex: Knex): Promise<void> {
         .onUpdate('CASCADE')
         .onDelete('CASCADE');
     table
+        .uuid('room_id')
+        .notNullable()
+        .references('id')
+        .inTable('rooms')
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE');
+    table
+        .uuid('race_id')
+        .notNullable()
+        .references('id')
+        .inTable('races')
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE');
+    table
         .uuid('class_id')        
         .notNullable()
         .references('id')
@@ -26,8 +40,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('weight');
     table.string('gender');
     table.string('age');
-    table.string('size');
-    table.string('race');
+    table.string('size');    
     table.string('level');
     table.string('alignment');
     table.timestamps();
