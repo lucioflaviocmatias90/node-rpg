@@ -33,7 +33,7 @@ class SessionController {
         });
       }
 
-      const token = await new Auth().sign(userExists);
+      const token = await new Auth().sign(userExists.id);
 
       return response.status(200).json({ userId: userExists.id, token });
     } catch (err) {

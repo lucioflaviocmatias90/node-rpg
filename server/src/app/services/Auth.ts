@@ -1,6 +1,12 @@
 import jwt from 'jsonwebtoken';
 import jwtConfig from '../../config/jwt';
 
+export interface JwtResponse {
+  data: string | object,
+  iat: number,
+  exp: number
+}
+
 class Auth {
   public config;
 
@@ -8,7 +14,7 @@ class Auth {
     this.config = jwtConfig;
   }
 
-  public sign(payload: object) {
+  public sign(payload: string) {
     const token = jwt.sign({
       data: payload,
     }, this.config.key, { expiresIn: this.config.expiresIn });
@@ -16,11 +22,11 @@ class Auth {
     return token;
   }
 
-  public verify(token: string) {
+  public verify(token: string): string | object {
     try {
-      const decoded = jwt.verify(token, this.config.key);
+      const { data }: JwtResponse = jwt.verify(token, this.config.key);
 
-      return decoded;
+      return data;
     } catch (err) {
       return {
         error: true,
