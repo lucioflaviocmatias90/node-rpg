@@ -1,36 +1,11 @@
-// Update with your config settings.
-
 export default {
 
-  // development: {
-  //   client: "sqlite3",
-  //   connection: {
-  //     filename: "./dev.sqlite3"
-  //   }
-  // },
-
-  // staging: {
-  //   client: "postgresql",
-  //   connection: {
-  //     database: "my_db",
-  //     user: "username",
-  //     password: "password"
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
-  //   migrations: {
-  //     tableName: "knex_migrations"
-  //   }
-  // },
-
   development: {
-    client: "postgresql",
+    client: 'postgresql',
     connection: {
-      database: "node-rpg",
-      user: "docker",
-      password: "docker"
+      database: 'node-rpg',
+      user: 'docker',
+      password: 'docker'
     },
     pool: {
       min: 2,
@@ -39,7 +14,7 @@ export default {
     migrations: {
       tableName: 'migrations_table',
       extension: 'ts',
-      directory: './src/database/migrations',
+      directory: './src/database/migrations'
     },
     seeds: {
       directory: './src/database/seeds'
@@ -47,34 +22,35 @@ export default {
   },
 
   staging: {
-    client: "postgresql",
+    client: 'postgresql',
     connection: {
-      database: "node-rpg",
-      user: "docker",
-      password: "docker"
+      database: 'node-rpg-test',
+      user: 'docker',
+      password: 'docker',
+      port: 5433
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
-      tableName: "knex_migrations"
+      tableName: 'migrations_table'
     }
   },
 
   production: {
-    client: "postgresql",
+    client: 'postgresql',
     connection: {
-      database: "node-rpg",
-      user: "docker",
-      password: "docker"
+      database: 'node-rpg',
+      user: 'docker',
+      password: 'docker'
     },
     pool: {
       min: 2,
       max: 10
     },
     migrations: {
-      tableName: "knex_migrations"
+      tableName: 'migrations_table'
     }
   }
 

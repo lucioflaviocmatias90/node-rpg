@@ -1,10 +1,17 @@
 import { Request, Response } from 'express';
 import { Room } from '../models/Room';
 import { getRepository } from 'typeorm';
+import { validationResult } from 'express-validator';
 
 class RoomController {
   async store (request: Request, response: Response) {
     try {
+      const errors = validationResult(request);
+
+      if (!errors.isEmpty()) {
+        return response.status(400).json({ errors: errors.array() });
+      }
+
       const { name } = request.body;
 
       const roomRepository = getRepository(Room);
