@@ -1,11 +1,11 @@
-import express, { Application } from "express";
-import routes from "./routes";
-import Connection from "./database/connection"
+import express, { Application } from 'express';
+import routes from './routes';
+import Connection from './database/connection';
 
 class App {
   public app: Application;
 
-  public constructor() {
+  public constructor () {
     this.app = express();
 
     this.database();
@@ -13,15 +13,15 @@ class App {
     this.routes();
   }
 
-  private middlewares() {
+  private middlewares () {
     this.app.use(express.json());
   }
 
-  private routes() {
+  private routes () {
     this.app.use(routes);
   }
 
-  private async database() {
+  private async database () {
     await new Connection().create();
   }
 }

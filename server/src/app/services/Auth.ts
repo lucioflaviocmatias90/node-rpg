@@ -10,19 +10,19 @@ export interface JwtResponse {
 class Auth {
   public config;
 
-  public constructor() {
+  public constructor () {
     this.config = jwtConfig;
   }
 
-  public sign(payload: string) {
+  public sign (payload: string) {
     const token = jwt.sign({
-      data: payload,
+      data: payload
     }, this.config.key, { expiresIn: this.config.expiresIn });
 
     return token;
   }
 
-  public verify(token: string): string | object {
+  public verify (token: string): string | object {
     try {
       const { data }: JwtResponse = jwt.verify(token, this.config.key);
 
@@ -30,7 +30,7 @@ class Auth {
     } catch (err) {
       return {
         error: true,
-        message: err.message,
+        message: err.message
       };
     }
   }

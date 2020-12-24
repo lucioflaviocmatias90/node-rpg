@@ -1,8 +1,8 @@
-import { Entity, Column, BeforeInsert } from "typeorm";
+import { Entity, Column, BeforeInsert } from 'typeorm';
 import { Model } from './traits/Model';
-import Hash from '../services/Hash'
+import Hash from '../services/Hash';
 
-@Entity("users")
+@Entity('users')
 export class User extends Model {
   @Column('varchar')
   name: string;
@@ -17,10 +17,10 @@ export class User extends Model {
   gender: number;
 
   @Column('varchar')
-  birthday: Date;  
+  birthday: Date;
 
   @BeforeInsert()
-  async generateHash() {
+  async generateHash () {
     this.password = await Hash.generate(this.password);
   }
 }

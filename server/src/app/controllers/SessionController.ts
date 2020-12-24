@@ -1,20 +1,20 @@
 import { Request, Response } from 'express';
 import { User } from '../models/User';
-import { getRepository } from "typeorm";
+import { getRepository } from 'typeorm';
 
 import Auth from '../services/Auth';
 import Hash from '../services/Hash';
 
 class SessionController {
-  async store(request: Request, response: Response) {
+  async store (request: Request, response: Response) {
     try {
       const { email, password } = request.body;
 
       const userRepository = getRepository(User);
-      const userExists = await userRepository.findOne({ where: { email }});
+      const userExists = await userRepository.findOne({ where: { email } });
 
       if (!userExists) {
-        return response.status(400).json({ 
+        return response.status(400).json({
           error: {
             code: '001',
             message: 'Email ou senha inválido'
@@ -25,7 +25,7 @@ class SessionController {
       const result = await Hash.compare(password, userExists.password);
 
       if (!result) {
-        return response.status(400).json({ 
+        return response.status(400).json({
           error: {
             code: '002',
             message: 'Email ou senha inválido'

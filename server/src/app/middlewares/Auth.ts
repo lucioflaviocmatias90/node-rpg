@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../models/User';
-import { getRepository } from "typeorm";
+import { getRepository } from 'typeorm';
 import Auth from '../services/Auth';
 
 export default async (request: Request, response: Response, next: NextFunction) => {
@@ -41,6 +41,6 @@ export default async (request: Request, response: Response, next: NextFunction) 
   const userExists = await userRepository.findOne(userId);
 
   request.authenticatedUser = userExists;
-  
+
   next();
-}
+};

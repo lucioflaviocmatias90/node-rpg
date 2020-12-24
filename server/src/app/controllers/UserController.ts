@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { getRepository } from "typeorm";
-import { User } from "../models/User";
+import { Request, Response } from 'express';
+import { getRepository } from 'typeorm';
+import { User } from '../models/User';
 
 class UserController {
-  async index(request: Request, response: Response) {
+  async index (request: Request, response: Response) {
     try {
       const userRepository = getRepository(User);
       const users = await userRepository.find();
@@ -19,7 +19,7 @@ class UserController {
     }
   }
 
-  async store(request: Request, response: Response) {
+  async store (request: Request, response: Response) {
     try {
       const { name, email, password, gender, birthday } = request.body;
       const userRepository = getRepository(User);
@@ -29,9 +29,9 @@ class UserController {
       if (userExists) {
         return response.status(400).json({
           error: {
-            code: "001",
-            message: "Email em uso",
-          },
+            code: '001',
+            message: 'Email em uso'
+          }
         });
       }
 
@@ -40,7 +40,7 @@ class UserController {
         email,
         password,
         gender,
-        birthday,
+        birthday
       });
 
       const newUser = await userRepository.save(user);
@@ -49,15 +49,15 @@ class UserController {
     } catch (err) {
       return response.status(400).json({
         error: {
-          code: "002",
-          message: "Erro ao cadastrar o usuário",
+          code: '002',
+          message: 'Erro ao cadastrar o usuário',
           err: err.message
-        },
+        }
       });
     }
   }
 
-  async destroy(request: Request, response: Response) {
+  async destroy (request: Request, response: Response) {
     try {
       const { id: userId } = request.params;
 
@@ -67,9 +67,9 @@ class UserController {
       if (!userExists) {
         return response.status(400).json({
           error: {
-            code: "001",
-            message: "Usuário não encontrado",
-          },
+            code: '001',
+            message: 'Usuário não encontrado'
+          }
         });
       }
 
@@ -77,14 +77,14 @@ class UserController {
 
       return response
         .status(200)
-        .json({ message: "Usuário excluído com sucesso" });
+        .json({ message: 'Usuário excluído com sucesso' });
     } catch (err) {
       return response.status(400).json({
         error: {
-          code: "002",
-          message: "Erro ao excluir o usuário",
-          err: err.message,
-        },
+          code: '002',
+          message: 'Erro ao excluir o usuário',
+          err: err.message
+        }
       });
     }
   }

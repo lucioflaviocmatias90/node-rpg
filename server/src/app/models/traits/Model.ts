@@ -1,15 +1,15 @@
 import {
-  PrimaryGeneratedColumn, 
-  CreateDateColumn, 
-  UpdateDateColumn, 
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
   DeleteDateColumn,
-  BeforeInsert 
-} from "typeorm";
+  BeforeInsert
+} from 'typeorm';
 
 import { v4 as uuidv4 } from 'uuid';
 
 export abstract class Model {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
@@ -22,17 +22,17 @@ export abstract class Model {
   deleted_at: Date;
 
   @BeforeInsert()
-  generateUuid() {
+  generateUuid () {
     this.id = uuidv4();
   }
 
   @BeforeInsert()
-  createDates() {
+  createDates () {
     this.created_at = new Date();
   }
 
   @BeforeInsert()
-  updateDates() {
+  updateDates () {
     this.updated_at = new Date();
   }
 }
