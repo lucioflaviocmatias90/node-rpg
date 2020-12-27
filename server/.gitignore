@@ -3,3 +3,4 @@
 /src/tests/coverage
 
 .env
+yarn-error.log
