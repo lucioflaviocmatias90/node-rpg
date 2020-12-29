@@ -1,9 +1,27 @@
 import { Request, Response } from 'express';
-import { Room } from '../models/Room';
-import { getRepository } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
+import { RoomRepository } from '../repositories/RoomRepository';
 import { validationResult } from 'express-validator';
 
 class RoomController {
+  async index (request: Request, response: Response) {
+    const roomRepository = getCustomRepository(RoomRepository);
+
+    try {
+      const rooms = await roomRepository.fetchAll();
+
+      return response.status(200).json({ list: rooms });
+    } catch (err) {
+      return response.status(400).json({
+        error: {
+          code: '001',
+          message: 'Erro ao listar os produtos',
+          err: err.message
+        }
+      });
+    }
+  }
+
   async store (request: Request, response: Response) {
     try {
       const errors = validationResult(request);
@@ -13,16 +31,13 @@ class RoomController {
       }
 
       const { name } = request.body;
+      const user = request.authenticatedUser;
 
-      const roomRepository = getRepository(Room);
+      const roomRepository = getCustomRepository(RoomRepository);
 
-      const statusRoom = 'f891cb29-2b75-4781-99e4-4550d20fda67';
+      await roomRepository.createAndSave(name, user.id);
 
-      const room = roomRepository.create({ name, status_room_id: statusRoom });
-
-      await roomRepository.save(room);
-
-      return response.status(200).json({ message: 'Sala criada' });
+      return response.status(200).json({ message: 'Sala criada com sucesso' });
     } catch (err) {
       return response.status(400).json({
         error: {

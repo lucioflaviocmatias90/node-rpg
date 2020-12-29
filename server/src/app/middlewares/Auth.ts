@@ -3,7 +3,9 @@ import { User } from '../models/User';
 import { getRepository } from 'typeorm';
 import Auth from '../services/Auth';
 
-export default async (request: Request, response: Response, next: NextFunction) => {
+export default async (
+  request: Request, response: Response, next: NextFunction
+) => {
   const header: string | undefined = request.header('authorization');
 
   if (!header) {
@@ -38,9 +40,8 @@ export default async (request: Request, response: Response, next: NextFunction) 
   }
 
   const userRepository = getRepository(User);
-  const userExists = await userRepository.findOne(userId);
 
-  request.authenticatedUser = userExists;
+  request.authenticatedUser = await userRepository.findOne(userId);
 
   next();
 };

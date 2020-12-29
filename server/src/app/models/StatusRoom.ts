@@ -1,25 +1,27 @@
 import {
+  Entity,
+  Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
   BeforeInsert
 } from 'typeorm';
 
 import { v4 as uuidv4 } from 'uuid';
 
-export abstract class Model {
+@Entity('status_rooms')
+export class StatusRoom {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
+
+  @Column('varchar')
+  name!: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
-  created_at: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
-  updated_at: Date;
-
-  @DeleteDateColumn({ type: 'timestamp', name: 'deleted_at' })
-  deleted_at: Date;
+  updatedAt!: Date;
 
   @BeforeInsert()
   generateUuid () {
@@ -28,11 +30,11 @@ export abstract class Model {
 
   @BeforeInsert()
   createDates () {
-    this.created_at = new Date();
+    this.createdAt = new Date();
   }
 
   @BeforeInsert()
   updateDates () {
-    this.updated_at = new Date();
+    this.updatedAt = new Date();
   }
 }
