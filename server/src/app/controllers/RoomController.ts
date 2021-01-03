@@ -30,12 +30,20 @@ class RoomController {
         return response.status(400).json({ errors: errors.array() });
       }
 
-      // const { name } = request.body;
-      // const user = request.authenticatedUser;
+      const { name } = request.body;
 
-      // const roomRepository = getCustomRepository(RoomRepository);
+      if (!request.authenticatedUser) {
+        return response.status(400).json({
+          error: {
+            code: '004',
+            message: 'Usuário não atenticado'
+          }
+        });
+      }
 
-      // await roomRepository.createAndSave(name, user.id);
+      const roomRepository = getCustomRepository(RoomRepository);
+
+      await roomRepository.createAndSave(name, request.authenticatedUser.id);
 
       return response.status(200).json({ message: 'Sala criada com sucesso' });
     } catch (err) {

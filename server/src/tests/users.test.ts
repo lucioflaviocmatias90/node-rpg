@@ -12,7 +12,7 @@ const connection = new Connection({
   password: 'docker',
   database: 'node-rpg-test',
   entities: ['./src/app/models/*.ts']
-}); ;
+});
 
 describe('Users testing...', () => {
   beforeAll(async () => {

@@ -13,6 +13,6 @@ interface IUser {
 
 declare namespace Express {
   export interface Request {
-    authenticatedUser: IUser
+    authenticatedUser?: IUser
   }
 }
