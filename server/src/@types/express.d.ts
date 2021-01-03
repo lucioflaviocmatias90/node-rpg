@@ -11,10 +11,8 @@ interface IUser {
   deletedAt: Date,
 }
 
-declare global {
-  namespace Express {
-    interface Request {
-      authenticatedUser: IUser
-    }
+declare namespace Express {
+  export interface Request {
+    authenticatedUser: IUser
   }
 }

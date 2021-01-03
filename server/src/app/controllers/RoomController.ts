@@ -30,12 +30,12 @@ class RoomController {
         return response.status(400).json({ errors: errors.array() });
       }
 
-      const { name } = request.body;
-      const user = request.authenticatedUser;
+      // const { name } = request.body;
+      // const user = request.authenticatedUser;
 
-      const roomRepository = getCustomRepository(RoomRepository);
+      // const roomRepository = getCustomRepository(RoomRepository);
 
-      await roomRepository.createAndSave(name, user.id);
+      // await roomRepository.createAndSave(name, user.id);
 
       return response.status(200).json({ message: 'Sala criada com sucesso' });
     } catch (err) {

@@ -39,9 +39,9 @@ export default async (
     });
   }
 
-  const userRepository = getRepository(User);
+  // const userRepository = getRepository(User);
 
-  request.authenticatedUser = await userRepository.findOne(userId);
+  // request.authenticatedUser = await userRepository.findOne(userId);
 
   next();
 };

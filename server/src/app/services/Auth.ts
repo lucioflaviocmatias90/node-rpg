@@ -1,12 +1,6 @@
 import jwt from 'jsonwebtoken';
 import jwtConfig from '../../config/jwt';
 
-export interface JwtResponse {
-  data: string | object,
-  iat: number,
-  exp: number
-}
-
 class Auth {
   public config;
 
@@ -24,7 +18,7 @@ class Auth {
 
   public verify (token: string): string | object {
     try {
-      const { data }: JwtResponse = jwt.verify(token, this.config.key);
+      const { data } = <any>jwt.verify(token, this.config.key);
 
       return data;
     } catch (err) {

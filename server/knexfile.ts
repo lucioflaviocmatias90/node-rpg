@@ -21,7 +21,7 @@ export default {
     }
   },
 
-  staging: {
+  testing: {
     client: 'postgresql',
     connection: {
       database: 'node-rpg-test',
@@ -34,7 +34,9 @@ export default {
       max: 10
     },
     migrations: {
-      tableName: 'migrations_table'
+      tableName: 'migrations_table',
+      extension: 'ts',
+      directory: './src/database/migrations'
     }
   },
 

@@ -1,6 +1,7 @@
 import express, { Application } from 'express';
 import routes from './routes';
 import Connection from './database/connection';
+import options from './config/database';
 
 class App {
   public app: Application;
@@ -22,7 +23,7 @@ class App {
   }
 
   private async database () {
-    await new Connection().create();
+    await new Connection(options).create();
   }
 }
 

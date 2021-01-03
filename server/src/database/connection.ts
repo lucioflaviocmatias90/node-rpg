@@ -1,10 +1,15 @@
-import { createConnection, getConnection } from 'typeorm';
-import options from '../config/database';
+import { createConnection, getConnection, ConnectionOptions } from 'typeorm';
 
 export default class Database {
+  private options: ConnectionOptions;
+
+  constructor (options: ConnectionOptions) {
+    this.options = options;
+  }
+
   async create () {
     try {
-      await createConnection(options);
+      await createConnection(this.options);
 
       console.log('Connected on database');
     } catch (err) {
@@ -16,7 +21,9 @@ export default class Database {
     try {
       await getConnection().close();
     } catch (err) {
-      console.log(`An occurred error on disconnect to database: ${err.message}`);
+      console.log(
+        `An occurred error on disconnect to database: ${err.message}`
+      );
     }
   }
 

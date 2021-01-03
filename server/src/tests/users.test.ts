@@ -1,21 +1,18 @@
-// import { join } from 'path';
-// /* eslint-disable import/first */
-// import * as dotenv from 'dotenv';
-
-// dotenv.config();
-
-// const envPath = process.env.NODE_ENV === 'testing'
-//   ? join(__dirname, '..', '..', '.env.testing')
-//   : join(__dirname, '..', '..', '.env');
-
-// dotenv.config({ path: envPath });
-
-// console.log(process.env.DB_DATABASE);
-
 /* eslint-disable no-undef */
-import Connection from '../database/connection';
 
-const connection = new Connection();
+import Connection from '../database/connection';
+import request from 'supertest';
+import app from '../app';
+
+const connection = new Connection({
+  type: 'postgres',
+  host: 'localhost',
+  port: 5433,
+  username: 'docker',
+  password: 'docker',
+  database: 'node-rpg-test',
+  entities: ['./src/app/models/*.ts']
+}); ;
 
 describe('Users testing...', () => {
   beforeAll(async () => {
@@ -26,9 +23,13 @@ describe('Users testing...', () => {
     await connection.destroy();
   });
 
-  // beforeEach(async () => {
-  //   await connection.clear();
-  // });
+  it('get all users', async () => {
+    const response = await request(app).get('/users');
+
+    const { list } = response.body;
+
+    expect(list).toEqual([]);
+  });
 
   it('creates a user', () => {
     expect(true).toBeTruthy();
