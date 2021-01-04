@@ -6,6 +6,8 @@ import options from './config/database';
 
 const PORT = process.env.PORT || 3333;
 
-new Database(options).connect();
+new Database(options)
+  .connect()
+  .then(() => console.log('Connected on Database'));
 
 app.listen(PORT, () => console.log(`Running server on port ${PORT}`));
