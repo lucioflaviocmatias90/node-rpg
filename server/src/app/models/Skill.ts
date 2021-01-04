@@ -9,8 +9,8 @@ import {
 
 import { v4 as uuidv4 } from 'uuid';
 
-@Entity('status_rooms')
-export class StatusRoom {
+@Entity('skills')
+export class Skill {
   // Properties
   @PrimaryGeneratedColumn('uuid')
   id!: string;

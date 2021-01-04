@@ -1,36 +1,65 @@
 import {
   Entity,
   Column,
-  BeforeInsert,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn
+  DeleteDateColumn,
+  BeforeInsert
 } from 'typeorm';
 
 import { v4 as uuidv4 } from 'uuid';
-import Hash from '../services/Hash';
 
-@Entity('users')
-export class User {
+@Entity('characters')
+export class Character {
   // Properties
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
+  @Column({ type: 'varchar', name: 'user_id' })
+  userId!: string;
+
+  @Column({ type: 'varchar', name: 'room_id' })
+  roomId!: string;
+
+  @Column({ type: 'varchar', name: 'race_id' })
+  raceId!: string;
+
+  @Column({ type: 'varchar', name: 'class_id' })
+  classId!: string;
+
   @Column('varchar')
   name!: string;
 
-  @Column('varchar')
-  email!: string;
+  @Column({ type: 'varchar', name: 'total_xp' })
+  totalXp!: string;
+
+  @Column({ type: 'varchar', name: 'epic_destiny' })
+  epicDestiny!: string;
 
   @Column('varchar')
-  password!: string;
+  affiliations!: string;
+
+  @Column('varchar')
+  height!: string;
+
+  @Column('varchar')
+  weight!: string;
 
   @Column('varchar')
   gender!: string;
 
   @Column('varchar')
-  birthday!: string;
+  age!: string;
+
+  @Column('varchar')
+  size!: string;
+
+  @Column('varchar')
+  level!: string;
+
+  @Column('varchar')
+  alignment!: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt!: Date;
@@ -55,10 +84,5 @@ export class User {
   @BeforeInsert()
   updateDates () {
     this.updatedAt = new Date();
-  }
-
-  @BeforeInsert()
-  async generateHash () {
-    this.password = await Hash.generate(this.password);
   }
 }

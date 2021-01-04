@@ -9,14 +9,32 @@ import {
 
 import { v4 as uuidv4 } from 'uuid';
 
-@Entity('status_rooms')
-export class StatusRoom {
+@Entity('user_addresses')
+export class UserAddress {
   // Properties
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
+  @Column({ type: 'varchar', name: 'user_id' })
+  userId!: string;
+
   @Column('varchar')
-  name!: string;
+  zipcode!: string;
+
+  @Column('varchar')
+  street!: string;
+
+  @Column('varchar')
+  number!: string;
+
+  @Column('varchar')
+  neighborhood!: string;
+
+  @Column('varchar')
+  complement!: string;
+
+  @Column('varchar')
+  city!: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt!: Date;

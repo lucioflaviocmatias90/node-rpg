@@ -18,7 +18,6 @@ export async function up (knex: Knex): Promise<void> {
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
     table.timestamps();
-    table.timestamp('deleted_at');
   });
 }
 

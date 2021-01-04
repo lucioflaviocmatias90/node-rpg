@@ -9,14 +9,17 @@ import {
 
 import { v4 as uuidv4 } from 'uuid';
 
-@Entity('status_rooms')
-export class StatusRoom {
+@Entity('masters')
+export class Master {
   // Properties
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column('varchar')
-  name!: string;
+  @Column({ type: 'varchar', name: 'user_id' })
+  userId!: string;
+
+  @Column({ type: 'varchar', name: 'room_id' })
+  roomId!: string;
 
   @CreateDateColumn({ type: 'timestamp', name: 'created_at' })
   createdAt!: Date;

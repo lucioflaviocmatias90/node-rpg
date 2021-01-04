@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Entity('user_room')
 export class UserRoom {
+  // Properties
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -26,6 +27,7 @@ export class UserRoom {
   @UpdateDateColumn({ type: 'timestamp', name: 'updated_at' })
   updatedAt!: Date;
 
+  // Hooks
   @BeforeInsert()
   generateUuid () {
     this.id = uuidv4();

@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Entity('rooms')
 export class Room {
+  // Properties
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -31,6 +32,7 @@ export class Room {
     this.id = uuidv4();
   }
 
+  // Hooks
   @BeforeInsert()
   createDates () {
     this.createdAt = new Date();
