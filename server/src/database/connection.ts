@@ -1,25 +1,24 @@
-import { createConnection, getConnection, ConnectionOptions } from 'typeorm';
+import { createConnection, ConnectionOptions, Connection } from 'typeorm';
 
 export default class Database {
   private options: ConnectionOptions;
+  public connection!: Connection;
 
   constructor (options: ConnectionOptions) {
     this.options = options;
   }
 
-  async create () {
+  async connect () {
     try {
-      await createConnection(this.options);
-
-      console.log('Connected on database');
+      this.connection = await createConnection(this.options);
     } catch (err) {
       console.log(`An occurred error on connect to database: ${err.message}`);
     }
   }
 
-  async destroy () {
+  async disconnect () {
     try {
-      await getConnection().close();
+      await this.connection.close();
     } catch (err) {
       console.log(
         `An occurred error on disconnect to database: ${err.message}`
@@ -28,12 +27,13 @@ export default class Database {
   }
 
   async clear () {
-    const connection = getConnection();
-    const entities = connection.entityMetadatas;
+    const entities = this.connection.entityMetadatas;
 
     entities.forEach(async (entity) => {
-      const repository = connection.getRepository(entity.name);
+      const repository = this.connection.getRepository(entity.name);
       await repository.query(`DELETE FROM ${entity.tableName}`);
+
+      console.log(`clear all data in ${entity.tableName} table`);
     });
   }
 }

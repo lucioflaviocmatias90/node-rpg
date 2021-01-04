@@ -1,10 +1,12 @@
 /* eslint-disable no-undef */
 
-import Connection from '../database/connection';
+import Database from '../database/connection';
 import request from 'supertest';
 import app from '../app';
+import { User as userData } from '../database/factory';
+import { User } from '../app/models/User';
 
-const connection = new Connection({
+const database = new Database({
   type: 'postgres',
   host: 'localhost',
   port: 5433,
@@ -14,15 +16,24 @@ const connection = new Connection({
   entities: ['./src/app/models/*.ts']
 });
 
-describe('Users testing...', () => {
-  beforeAll(async () => {
-    await connection.create();
-  });
+beforeAll(async () => {
+  await database.connect();
+});
 
-  afterAll(async () => {
-    await connection.destroy();
-  });
+afterAll(async () => {
+  await database.disconnect();
+});
 
+beforeEach(async () => {
+  await database
+    .connection
+    .createQueryBuilder()
+    .delete()
+    .from(User)
+    .execute();
+});
+
+describe('GET /users', () => {
   it('get all users', async () => {
     const response = await request(app).get('/users');
 
@@ -30,8 +41,14 @@ describe('Users testing...', () => {
 
     expect(list).toEqual([]);
   });
+});
 
-  it('creates a user', () => {
-    expect(true).toBeTruthy();
+describe('POST /users', () => {
+  it('create a new user', async () => {
+    const response = await request(app).post('/users').send(userData);
+
+    const { user } = response.body;
+
+    expect(user.name).toBe(userData.name);
   });
 });
