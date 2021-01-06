@@ -15,7 +15,7 @@ class RoomController {
       return response.status(400).json({
         error: {
           code: '001',
-          message: 'Erro ao listar os produtos',
+          message: 'Erro ao encontrar as salas',
           err: err.message
         }
       });

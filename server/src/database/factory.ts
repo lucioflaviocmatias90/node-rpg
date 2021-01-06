@@ -5,5 +5,5 @@ export const User = {
   email: faker.internet.email(),
   password: faker.random.word(),
   gender: faker.random.word(),
-  birthday: faker.date.past()
+  birthday: '2020-03-12'
 };

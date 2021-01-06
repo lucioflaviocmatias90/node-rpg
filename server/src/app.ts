@@ -22,11 +22,28 @@ class App {
   }
 
   private routes () {
+    const options = {
+      swaggerOptions: {
+        authAction: {
+          JWT: {
+            name: 'JWT',
+            schema: {
+              type: 'apiKey',
+              in: 'header',
+              name: 'Authorization',
+              description: ''
+            },
+            value: 'Bearer <JWT>'
+          }
+        }
+      }
+    };
+
     this.app.use(routes);
     this.app.use(
       '/api-docs',
       swaggerUi.serve,
-      swaggerUi.setup(swaggerDocument)
+      swaggerUi.setup(swaggerDocument, options)
     );
   }
 }

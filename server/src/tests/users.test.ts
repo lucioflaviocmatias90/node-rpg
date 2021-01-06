@@ -1,20 +1,10 @@
 /* eslint-disable no-undef */
 
-import Database from '../database/connection';
+import database from './database';
 import request from 'supertest';
 import app from '../app';
 import { User as userData } from '../database/factory';
 import { User } from '../app/models/User';
-
-const database = new Database({
-  type: 'postgres',
-  host: 'localhost',
-  port: 5433,
-  username: 'docker',
-  password: 'docker',
-  database: 'node-rpg-test',
-  entities: ['./src/app/models/*.ts']
-});
 
 beforeAll(async () => {
   await database.connect();

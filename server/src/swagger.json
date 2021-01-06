@@ -108,7 +108,7 @@
                   "value": {
                     "name": "Fulano Ciclano",
                     "email": "fulano@email.com",                    
-                    "password": "fulano@email.com",                    
+                    "password": "123123",                    
                     "gender": "fulano@email.com",                    
                     "birthday": "fulano@email.com"                  
                   }
@@ -199,6 +199,187 @@
                     "code": "002",
                     "message": "Erro ao excluir o usuário",
                     "err": "invalid input syntax for type uuid: \"c3b2f3e-f5a5-4897-9121-98e68fcc0ebc\""
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": [
+          "sessions"
+        ],
+        "summary": "Create a new session",
+        "requestBody": {
+          "description": "Send credentials to create a new session",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "description": "Updated valid email of the user",
+                    "type": "string",
+                    "example": "lucio@email.com"
+                  },
+                  "password": { 
+                    "description": "Updated password with min 6 characters of the user",
+                    "type": "string",
+                    "example": "123123"
+                  }
+                },
+                "required": ["email", "password"]
+              },
+              "examples": {
+                "user": {
+                  "summary": "All completed user data",
+                  "value": {
+                    "email": "fulano@email.com",                    
+                    "password": "123123"                 
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "userId": "8376f771-0eb7-43cb-b5aa-ddbb4e87c04e",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiODM3NmY3NzEtMGViNy00M2NiLWI1YWEtZGRiYjRlODdjMDRlIiwiaWF0IjoxNjA5ODU4ODEzLCJleHAiOjE2MDk4NjI0MTN9.jXqvcWJxoSO0mri_-_ZCAc368i97UDyVa3-vkx7bcAU"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User already exists",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "001",
+                    "message": "Email ou senha inválido"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rooms": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "List all available rooms",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "description": "Authentication Bearer Token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "list": [
+                    {
+                      "id": "93f6541f-365e-4747-86ef-6e4db67bd17c",
+                      "name": "Masmorra da Morte Sombria",
+                      "statusRoomId": "f891cb29-2b75-4781-99e4-4550d20fda67",
+                      "createdAt": "2021-01-04T23:58:45.741Z",
+                      "updatedAt": "2021-01-04T23:58:45.741Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "An occurred erro when list rooms",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "001",
+                    "message": "Erro ao encontrar as salas"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "rooms"
+        ],
+        "summary": "Create a new session",
+        "requestBody": {
+          "description": "Send credentials to create a new session",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "description": "Updated valid email of the user",
+                    "type": "string",
+                    "example": "lucio@email.com"
+                  },
+                  "password": { 
+                    "description": "Updated password with min 6 characters of the user",
+                    "type": "string",
+                    "example": "123123"
+                  }
+                },
+                "required": ["email", "password"]
+              },
+              "examples": {
+                "user": {
+                  "summary": "All completed user data",
+                  "value": {
+                    "email": "fulano@email.com",                    
+                    "password": "123123"                 
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful",
+            "content": {
+              "application/json": {
+                "example": {
+                  "userId": "8376f771-0eb7-43cb-b5aa-ddbb4e87c04e",
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiODM3NmY3NzEtMGViNy00M2NiLWI1YWEtZGRiYjRlODdjMDRlIiwiaWF0IjoxNjA5ODU4ODEzLCJleHAiOjE2MDk4NjI0MTN9.jXqvcWJxoSO0mri_-_ZCAc368i97UDyVa3-vkx7bcAU"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User already exists",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "001",
+                    "message": "Email ou senha inválido"
                   }
                 }
               }
