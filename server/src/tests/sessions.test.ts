@@ -1,9 +1,13 @@
 /* eslint-disable no-undef */
+import '../utils/env';
 import request from 'supertest';
 import app from '../app';
-import database from './database';
 import { User as userData } from '../database/factory';
 import { User } from '../app/models/User';
+import Database from '../database/connection';
+import options from '../config/database';
+
+const database = new Database(options);
 
 beforeAll(async () => {
   await database.connect();

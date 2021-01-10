@@ -12,7 +12,10 @@ export default class Database {
     try {
       this.connection = await createConnection(this.options);
     } catch (err) {
-      console.log(`An occurred error on connect to database: ${err.message}`);
+      throw new Error(
+        `An occurred error on connect to database: ${err.message}`
+      );
+      ;
     }
   }
 

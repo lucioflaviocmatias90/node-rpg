@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3333;
 
 new Database(options)
   .connect()
-  .then(() => console.log('Connected on Database'));
+  .then(() => console.log('Connected on Database'))
+  .catch(console.error);
 
 app.listen(PORT, () => console.log(`Running server on port ${PORT}`));
