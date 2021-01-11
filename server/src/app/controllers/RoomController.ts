@@ -12,6 +12,7 @@ class RoomController {
 
       return response.status(200).json({ list: rooms });
     } catch (err) {
+      /* istanbul ignore next */
       return response.status(400).json({
         error: {
           code: '001',

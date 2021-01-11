@@ -10,6 +10,7 @@ class UserController {
 
       return response.status(200).json({ list: users });
     } catch (err) {
+      /* istanbul ignore next */
       return response.status(400).json({
         error: {
           code: '001',
@@ -47,6 +48,7 @@ class UserController {
 
       return response.status(200).json({ user: newUser });
     } catch (err) {
+      /* istanbul ignore next */
       return response.status(400).json({
         error: {
           code: '002',

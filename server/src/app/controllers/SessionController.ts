@@ -37,6 +37,7 @@ class SessionController {
 
       return response.status(200).json({ userId: userExists.id, token });
     } catch (err) {
+      /* istanbul ignore next */
       return response.status(400).json({
         error: {
           code: '003',

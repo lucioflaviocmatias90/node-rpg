@@ -35,8 +35,6 @@ export default class Database {
     entities.forEach(async (entity) => {
       const repository = this.connection.getRepository(entity.name);
       await repository.query(`DELETE FROM ${entity.tableName}`);
-
-      console.log(`clear all data in ${entity.tableName} table`);
     });
   }
 }
