@@ -1,25 +1,32 @@
-import { createConnection, ConnectionOptions, Connection } from 'typeorm';
+import { createConnection, ConnectionOptions, Connection } from "typeorm";
+import options from "../config/database";
 
 export default class Database {
-  private options: ConnectionOptions;
+  private options!: ConnectionOptions;
+  private static instance: Database;
   public connection!: Connection;
 
-  constructor (options: ConnectionOptions) {
-    this.options = options;
+  private constructor() {}
+
+  public static getInstance() {
+    if (!this.instance) {
+      this.instance = new Database();
+      this.instance.options = options;
+    }
+    return this.instance;
   }
 
-  async connect () {
+  async connect() {
     try {
       this.connection = await createConnection(this.options);
     } catch (err) {
       throw new Error(
         `An occurred error on connect to database: ${err.message}`
       );
-      ;
     }
   }
 
-  async disconnect () {
+  async disconnect() {
     try {
       await this.connection.close();
     } catch (err) {
@@ -29,7 +36,7 @@ export default class Database {
     }
   }
 
-  async clear () {
+  async clear() {
     const entities = this.connection.entityMetadatas;
 
     entities.forEach(async (entity) => {

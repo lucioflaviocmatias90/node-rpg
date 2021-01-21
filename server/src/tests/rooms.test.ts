@@ -1,36 +1,35 @@
 /* eslint-disable no-undef */
-import '../utils/env';
-import request from 'supertest';
-import app from '../app';
-import { User as userData } from '../database/factory';
-import { User } from '../app/models/User';
-import { Room } from '../app/models/Room';
-import Database from '../database/connection';
-import options from '../config/database';
-import Auth from '../app/services/Auth';
+import "../utils/env";
+import request from "supertest";
+import app from "../app";
+import { User as userData } from "../database/factory";
+import { User } from "../app/models/User";
+import { Room } from "../app/models/Room";
+import Database from "../database/connection";
+import Auth from "../app/services/Auth";
 
-const database = new Database(options);
+const database = Database.getInstance();
 
 beforeAll(async () => {
   await database.connect();
 });
 
-afterAll(async () => {
-  await database.disconnect();
-});
+// afterAll(async () => {
+//   await database.disconnect();
+// });
 
 beforeEach(async () => {
   await database.clear();
 });
 
-describe('GET /rooms', () => {
-  it('should to list all available rooms', async () => {
+describe("GET /rooms", () => {
+  it("should to list all available rooms", async () => {
     const newUser = await createUser();
     const token = new Auth().sign(newUser.id);
 
     const response = await request(app)
-      .get('/rooms')
-      .set('Authorization', `bearer ${token}`);
+      .get("/rooms")
+      .set("Authorization", `bearer ${token}`);
 
     const { list } = response.body;
 
@@ -38,22 +37,22 @@ describe('GET /rooms', () => {
   });
 });
 
-describe('POST /rooms', () => {
-  it('should error when not sending required request body', async () => {
+describe("POST /rooms", () => {
+  it("should error when not sending required request body", async () => {
     const newUser = await createUser();
     const token = new Auth().sign(newUser.id);
 
     const response = await request(app)
-      .post('/rooms')
-      .set('Authorization', `bearer ${token}`)
+      .post("/rooms")
+      .set("Authorization", `bearer ${token}`)
       .send({});
 
     const { errors } = response.body;
 
-    console.log('errors', errors);
+    console.log("errors", errors);
 
     expect(errors).toEqual([
-      { msg: 'Invalid value', param: 'name', location: 'body' }
+      { msg: "Invalid value", param: "name", location: "body" },
     ]);
   });
 });
@@ -63,10 +62,10 @@ const createUser = async () => {
 
   const user = userRepository.create({
     name: userData.name,
-    password: '123123',
+    password: "123123",
     email: userData.email,
     gender: userData.gender,
-    birthday: userData.birthday
+    birthday: userData.birthday,
   });
 
   return await userRepository.save(user);
