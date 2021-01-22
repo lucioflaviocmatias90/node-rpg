@@ -2,7 +2,7 @@
 import "../utils/env";
 import request from "supertest";
 import app from "../app";
-import { User as userData } from "../database/factory";
+import { UserFactory } from "../database/UserFactory";
 import { User } from "../app/models/User";
 import Database from "../database/connection";
 import { v4 as uuidV4 } from "uuid";
@@ -13,26 +13,31 @@ beforeAll(async () => {
   await database.connect();
 });
 
-// afterAll(async () => {
-//   await database.disconnect();
-// });
+afterAll(async () => {
+  await database.disconnect();
+});
 
 beforeEach(async () => {
-  await database.connection.createQueryBuilder().delete().from(User).execute();
+  await database.clear();
 });
 
 describe("GET /users", () => {
+  beforeEach(async () => {
+    await database.clear();
+  });
+
   it("get all users", async () => {
     const response = await request(app).get("/users");
 
-    const { list } = response.body;
+    // const { list } = response.body;
 
-    expect(list).toEqual([]);
+    expect(response.status).toBe(200);
   });
 });
 
 describe("POST /users", () => {
   it("should to create a new user", async () => {
+    const userData = new UserFactory().make();
     const response = await request(app).post("/users").send(userData);
 
     const { user } = response.body;
@@ -42,6 +47,7 @@ describe("POST /users", () => {
 
   it("should return error when existing user with same email", async () => {
     const newUser = await createUser();
+    const userData = new UserFactory().make();
 
     const response = await request(app).post("/users").send({
       name: userData.name,
@@ -94,6 +100,7 @@ describe("DELETE /users", () => {
 
 const createUser = async () => {
   const userRepository = database.connection.getRepository(User);
+  const userData = new UserFactory().make();
 
   const user = userRepository.create({
     name: userData.name,

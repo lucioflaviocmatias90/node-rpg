@@ -6,7 +6,7 @@ export default class Database {
   private static instance: Database;
   public connection!: Connection;
 
-  private constructor() {}
+  private constructor () {}
 
   public static getInstance() {
     if (!this.instance) {

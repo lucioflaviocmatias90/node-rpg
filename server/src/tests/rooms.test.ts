@@ -2,7 +2,7 @@
 import "../utils/env";
 import request from "supertest";
 import app from "../app";
-import { User as userData } from "../database/factory";
+import { UserFactory } from "../database/UserFactory";
 import { User } from "../app/models/User";
 import { Room } from "../app/models/Room";
 import Database from "../database/connection";
@@ -14,9 +14,9 @@ beforeAll(async () => {
   await database.connect();
 });
 
-// afterAll(async () => {
-//   await database.disconnect();
-// });
+afterAll(async () => {
+  await database.disconnect();
+});
 
 beforeEach(async () => {
   await database.clear();
@@ -49,8 +49,6 @@ describe("POST /rooms", () => {
 
     const { errors } = response.body;
 
-    console.log("errors", errors);
-
     expect(errors).toEqual([
       { msg: "Invalid value", param: "name", location: "body" },
     ]);
@@ -59,6 +57,7 @@ describe("POST /rooms", () => {
 
 const createUser = async () => {
   const userRepository = database.connection.getRepository(User);
+  const userData = new UserFactory().make();
 
   const user = userRepository.create({
     name: userData.name,

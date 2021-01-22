@@ -1,9 +1,32 @@
 import faker from 'faker';
 
-export const User = {
-  name: faker.name.firstName(),
-  email: faker.internet.email(),
-  password: faker.random.word(),
-  gender: faker.random.word(),
-  birthday: '2020-03-12'
-};
+export class Factory {
+  protected faker;
+  public _data: any;
+
+  public constructor () {
+    this.faker = faker;
+  }
+
+  get data () {
+    return this._data;
+  }
+
+  public make (data?: any) {
+    return { ...this.data, ...data };
+  }
+
+  public makeMany (length: number = 1, data?: any) {
+    const manyData = [];
+
+    for (let index = length; index > 0; index--) {
+      manyData.push({ ...this.data, ...data });
+    }
+
+    return manyData;
+  }
+
+  public create () {}
+
+  public createMany (length: number = 1) {}
+}
