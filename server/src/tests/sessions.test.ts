@@ -2,7 +2,7 @@
 import "../utils/env";
 import request from "supertest";
 import app from "../app";
-import { UserFactory } from "../database/UserFactory";
+import { UserFactory, UserDataFactory } from "../database/UserFactory";
 import { User } from "../app/models/User";
 import Database from "../database/connection";
 
@@ -65,15 +65,9 @@ describe("POST /sessions", () => {
 
 const createUser = async () => {
   const userRepository = database.connection.getRepository(User);
-  const userData = new UserFactory().make();
+  const userData = new UserFactory().make<UserDataFactory>();
 
-  const user = userRepository.create({
-    name: userData.name,
-    password: "123123",
-    email: userData.email,
-    gender: userData.gender,
-    birthday: userData.birthday,
-  });
+  const user = userRepository.create(userData);  
 
   return await userRepository.save(user);
 };

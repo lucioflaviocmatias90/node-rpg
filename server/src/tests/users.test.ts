@@ -2,7 +2,7 @@
 import "../utils/env";
 import request from "supertest";
 import app from "../app";
-import { UserFactory } from "../database/UserFactory";
+import { UserFactory, UserDataFactory } from "../database/UserFactory";
 import { User } from "../app/models/User";
 import Database from "../database/connection";
 import { v4 as uuidV4 } from "uuid";
@@ -28,6 +28,8 @@ describe("GET /users", () => {
 
   it("get all users", async () => {
     const response = await request(app).get("/users");
+    const newUser = await new UserFactory().create<User>();
+    console.log('newUser', newUser.id);
 
     // const { list } = response.body;
 
@@ -37,28 +39,31 @@ describe("GET /users", () => {
 
 describe("POST /users", () => {
   it("should to create a new user", async () => {
-    const userData = new UserFactory().make();
+    const userData = new UserFactory().make<UserDataFactory>();
     const response = await request(app).post("/users").send(userData);
 
     const { user } = response.body;
 
+    expect(response.status).toBe(200);
     expect(user.name).toBe(userData.name);
   });
 
   it("should return error when existing user with same email", async () => {
     const newUser = await createUser();
-    const userData = new UserFactory().make();
+    // const newUser = await new UserFactory().create();
+    const userData = new UserFactory().make<UserDataFactory>();
 
     const response = await request(app).post("/users").send({
       name: userData.name,
       password: "123123",
       email: newUser.email,
       gender: userData.gender,
-      birthday: userData.birthday,
+      birthday: userData.birthday
     });
 
     const { error } = response.body;
 
+    expect(response.status).toBe(400);
     expect(error.code).toBe("001");
     expect(error.message).toBe("Email em uso");
   });
@@ -72,6 +77,7 @@ describe("DELETE /users", () => {
 
     const { message } = response.body;
 
+    expect(response.status).toBe(200);
     expect(message).toBe("Usuário excluído com sucesso");
   });
 
@@ -82,6 +88,7 @@ describe("DELETE /users", () => {
 
     const { error } = response.body;
 
+    expect(response.status).toBe(400);
     expect(error.code).toBe("001");
     expect(error.message).toBe("Usuário não encontrado");
   });
@@ -93,6 +100,7 @@ describe("DELETE /users", () => {
 
     const { error } = response.body;
 
+    expect(response.status).toBe(400);
     expect(error.code).toBe("002");
     expect(error.message).toBe("Erro ao excluir o usuário");
   });
@@ -100,7 +108,7 @@ describe("DELETE /users", () => {
 
 const createUser = async () => {
   const userRepository = database.connection.getRepository(User);
-  const userData = new UserFactory().make();
+  const userData = new UserFactory().make<UserDataFactory>();
 
   const user = userRepository.create({
     name: userData.name,
