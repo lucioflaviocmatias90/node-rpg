@@ -1,9 +1,17 @@
 # node-rpg
 
 ## Commands
+
+### run all services (containers)
 - docker-compose up -d
-- yarn migrations
+
+### develop environment
+- yarn dev:migrations
 - yarn dev:server
+
+### test environment
+- yarn test:migrations
+- yarn test:server
 
 ## falta fazer
 - error handling

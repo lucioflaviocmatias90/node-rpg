@@ -41,3 +41,18 @@ services:
       - "5672:5672"
     networks:
       - node-rpg-network
+
+  sentry:
+    image: sentry:latest
+    depends_on:
+     - db
+    ports:
+     - 9000:9000
+    environment:
+      SENTRY_SECRET_KEY: verysecret
+      SENTRY_POSTGRES_HOST: db
+      SENTRY_DB_USER: docker
+      SENTRY_DB_PASSWORD: docker
+      SENTRY_REDIS_HOST: redis
+    networks:
+      - node-rpg-network
