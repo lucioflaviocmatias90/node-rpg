@@ -1,12 +1,13 @@
-import { createConnection, ConnectionOptions, Connection } from "typeorm";
-import options from "../config/database";
+import { createConnection, ConnectionOptions, Connection } from 'typeorm';
+import { DatabaseError } from '../app/exceptions/DatabaseError';
+import options from '../config/database';
 
 export default class Database {
   private options!: ConnectionOptions;
   private static instance: Database;
   public connection!: Connection;
 
-  private constructor () {}
+  private constructor() { }
 
   public static getInstance() {
     if (!this.instance) {
@@ -20,7 +21,7 @@ export default class Database {
     try {
       this.connection = await createConnection(this.options);
     } catch (err) {
-      throw new Error(
+      throw new DatabaseError(
         `An occurred error on connect to database: ${err.message}`
       );
     }

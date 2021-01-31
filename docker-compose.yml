@@ -29,7 +29,7 @@ services:
     networks:
       - node-rpg-network
 
-  message-queue:
+  rabbitmq:
     image: rabbitmq:3-management
     container_name: node-rpg-rabbitmq
     hostname: my-rabbit
@@ -44,6 +44,7 @@ services:
 
   sentry:
     image: sentry:latest
+    container_name: node-rpg-sentry
     depends_on:
      - db
     ports:
