@@ -4,11 +4,11 @@ import { UserRoom } from '../models/UserRoom';
 
 @EntityRepository(Room)
 export class RoomRepository extends AbstractRepository<Room> {
-  fetchAll () {
-    return this.repository.find();
+  fetchAll() {
+    return this.repository.find({ relations: ['status', 'users'] });
   }
 
-  async createAndSave (name: string, userId: string) {
+  async createAndSave(name: string, userId: string) {
     const statusRoomId = 'f891cb29-2b75-4781-99e4-4550d20fda67';
     const room = new Room();
 
@@ -27,7 +27,7 @@ export class RoomRepository extends AbstractRepository<Room> {
     await userRoomRepository.save(userRoom);
   }
 
-  findByName (name: string) {
+  findByName(name: string) {
     return this.repository.findOne({ name });
   }
 }

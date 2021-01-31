@@ -5,11 +5,14 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  DeleteDateColumn
+  DeleteDateColumn,
+  ManyToMany,
+  JoinTable
 } from 'typeorm';
 
 import { v4 as uuidv4 } from 'uuid';
 import Hash from '../services/Hash';
+import { Room } from './Room';
 
 @Entity('users')
 export class User {
@@ -43,22 +46,35 @@ export class User {
 
   // Hooks
   @BeforeInsert()
-  generateUuid () {
+  generateUuid() {
     this.id = uuidv4();
   }
 
   @BeforeInsert()
-  createDates () {
+  createDates() {
     this.createdAt = new Date();
   }
 
   @BeforeInsert()
-  updateDates () {
+  updateDates() {
     this.updatedAt = new Date();
   }
 
   @BeforeInsert()
-  async generateHash () {
+  async generateHash() {
     this.password = await Hash.generate(this.password);
   }
+
+  // Relationships
+  @ManyToMany(() => Room, room => room.users)
+  @JoinTable({
+    name: 'user_room',
+    joinColumns: [
+      { name: 'user_id' }
+    ],
+    inverseJoinColumns: [
+      { name: 'room_id' }
+    ]
+  })
+  rooms!: Room[]
 }

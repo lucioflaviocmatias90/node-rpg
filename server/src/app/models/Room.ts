@@ -4,10 +4,16 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  BeforeInsert
+  BeforeInsert,
+  ManyToMany,
+  JoinTable,
+  OneToOne,
+  JoinColumn
 } from 'typeorm';
 
 import { v4 as uuidv4 } from 'uuid';
+import { StatusRoom } from './StatusRoom';
+import { User } from './User';
 
 @Entity('rooms')
 export class Room {
@@ -28,18 +34,35 @@ export class Room {
   updatedAt!: Date;
 
   @BeforeInsert()
-  generateUuid () {
+  generateUuid() {
     this.id = uuidv4();
   }
 
   // Hooks
   @BeforeInsert()
-  createDates () {
+  createDates() {
     this.createdAt = new Date();
   }
 
   @BeforeInsert()
-  updateDates () {
+  updateDates() {
     this.updatedAt = new Date();
   }
+
+  // Relationships
+  @ManyToMany(() => User, user => user.rooms)
+  @JoinTable({
+    name: 'user_room',
+    joinColumns: [
+      { name: 'room_id' }
+    ],
+    inverseJoinColumns: [
+      { name: 'user_id' }
+    ]
+  })
+  users!: User[]
+
+  @OneToOne(() => StatusRoom)
+  @JoinColumn({ name: 'status_room_id', referencedColumnName: 'id' })
+  status!: StatusRoom
 }

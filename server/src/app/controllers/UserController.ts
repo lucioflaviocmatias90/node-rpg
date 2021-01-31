@@ -1,14 +1,25 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { User } from '../models/User';
+import { validationResult } from 'express-validator';
 
 class UserController {
-  async index (request: Request, response: Response) {
+  async index(request: Request, response: Response) {
     try {
       const userRepository = getRepository(User);
       const users = await userRepository.find();
 
-      return response.status(200).json({ list: users });
+      const list = users.map(user => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        gender: user.gender,
+        birthday: user.birthday,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt
+      }));
+
+      return response.status(200).json({ list });
     } catch (err) {
       /* istanbul ignore next */
       return response.status(400).json({
@@ -20,8 +31,14 @@ class UserController {
     }
   }
 
-  async store (request: Request, response: Response) {
+  async store(request: Request, response: Response) {
     try {
+      const errors = validationResult(request);
+
+      if (!errors.isEmpty()) {
+        return response.status(400).json({ errors: errors.array() });
+      }
+
       const { name, email, password, gender, birthday } = request.body;
       const userRepository = getRepository(User);
 
@@ -44,9 +61,11 @@ class UserController {
         birthday
       });
 
-      const newUser = await userRepository.save(user);
+      await userRepository.save(user);
 
-      return response.status(200).json({ user: newUser });
+      return response.status(200).json({
+        message: 'Usuário criado com sucesso'
+      });
     } catch (err) {
       /* istanbul ignore next */
       return response.status(400).json({
@@ -59,7 +78,7 @@ class UserController {
     }
   }
 
-  async destroy (request: Request, response: Response) {
+  async destroy(request: Request, response: Response) {
     try {
       const { id: userId } = request.params;
 

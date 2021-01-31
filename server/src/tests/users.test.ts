@@ -42,10 +42,22 @@ describe('POST /users', () => {
     const userData = new UserFactory().make<UserDataFactory>();
     const response = await request(app).post('/users').send(userData);
 
-    const { user } = response.body;
+    const { message } = response.body;
 
     expect(response.status).toBe(200);
-    expect(user.name).toBe(userData.name);
+    expect(message).toBe('Usuário criado com sucesso');
+  });
+
+  it('should return error when not sending required params', async () => {
+    const response = await request(app).post('/users').send({});
+
+    const { errors } = response.body;
+
+    expect(response.status).toBe(400);
+    expect(errors).toHaveLength(10);
+    expect(errors[0]).toHaveProperty('msg');
+    expect(errors[0]).toHaveProperty('param');
+    expect(errors[0]).toHaveProperty('location');
   });
 
   it('should return error when existing user with same email', async () => {

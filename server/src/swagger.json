@@ -74,7 +74,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "name": { 
+                  "name": {
                     "description": "Updated name of the user",
                     "type": "string",
                     "example": "Lucio Flavio C. Matias"
@@ -84,33 +84,39 @@
                     "type": "string",
                     "example": "lucio@email.com"
                   },
-                  "password": { 
+                  "password": {
                     "description": "Updated password with min 6 characters of the user",
                     "type": "string",
                     "example": "123123"
                   },
-                  "gender": { 
+                  "gender": {
                     "description": "Updated gender of the user",
                     "type": "string",
                     "example": "masculino"
                   },
-                  "birthday": { 
+                  "birthday": {
                     "description": "Updated birthday of the user",
                     "type": "string",
                     "example": "1970-12-27"
                   }
                 },
-                "required": ["name", "email", "password", "gender", "birthday"] 
+                "required": [
+                  "name",
+                  "email",
+                  "password",
+                  "gender",
+                  "birthday"
+                ]
               },
               "examples": {
                 "user": {
                   "summary": "All completed user data",
                   "value": {
                     "name": "Fulano Ciclano",
-                    "email": "fulano@email.com",                    
-                    "password": "123123",                    
-                    "gender": "fulano@email.com",                    
-                    "birthday": "fulano@email.com"                  
+                    "email": "fulano@email.com",
+                    "password": "123123",
+                    "gender": "fulano@email.com",
+                    "birthday": "fulano@email.com"
                   }
                 },
                 "user2": {
@@ -225,20 +231,23 @@
                     "type": "string",
                     "example": "lucio@email.com"
                   },
-                  "password": { 
+                  "password": {
                     "description": "Updated password with min 6 characters of the user",
                     "type": "string",
                     "example": "123123"
                   }
                 },
-                "required": ["email", "password"]
+                "required": [
+                  "email",
+                  "password"
+                ]
               },
               "examples": {
                 "user": {
                   "summary": "All completed user data",
                   "value": {
-                    "email": "fulano@email.com",                    
-                    "password": "123123"                 
+                    "email": "fulano@email.com",
+                    "password": "123123"
                   }
                 }
               }
@@ -339,20 +348,23 @@
                     "type": "string",
                     "example": "lucio@email.com"
                   },
-                  "password": { 
+                  "password": {
                     "description": "Updated password with min 6 characters of the user",
                     "type": "string",
                     "example": "123123"
                   }
                 },
-                "required": ["email", "password"]
+                "required": [
+                  "email",
+                  "password"
+                ]
               },
               "examples": {
                 "user": {
                   "summary": "All completed user data",
                   "value": {
-                    "email": "fulano@email.com",                    
-                    "password": "123123"                 
+                    "email": "fulano@email.com",
+                    "password": "123123"
                   }
                 }
               }

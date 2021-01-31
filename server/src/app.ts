@@ -8,42 +8,25 @@ import routes from './routes';
 class App {
   public app: Application;
 
-  public constructor () {
+  public constructor() {
     this.app = express();
 
     this.middlewares();
     this.routes();
   }
 
-  private middlewares () {
+  private middlewares() {
     this.app.use(express.json());
     this.app.use(cors());
     this.app.use(helmet());
   }
 
-  private routes () {
-    const options = {
-      swaggerOptions: {
-        authAction: {
-          JWT: {
-            name: 'JWT',
-            schema: {
-              type: 'apiKey',
-              in: 'header',
-              name: 'Authorization',
-              description: ''
-            },
-            value: 'Bearer <JWT>'
-          }
-        }
-      }
-    };
-
+  private routes() {
     this.app.use(routes);
     this.app.use(
       '/api-docs',
       swaggerUi.serve,
-      swaggerUi.setup(swaggerDocument, options)
+      swaggerUi.setup(swaggerDocument)
     );
   }
 }

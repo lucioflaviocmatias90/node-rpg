@@ -1,13 +1,20 @@
 import { Request, Response } from 'express';
 import { User } from '../models/User';
 import { getRepository } from 'typeorm';
+import { validationResult } from 'express-validator';
 
 import Auth from '../services/Auth';
 import Hash from '../services/Hash';
 
 class SessionController {
-  async store (request: Request, response: Response) {
+  async store(request: Request, response: Response) {
     try {
+      const errors = validationResult(request);
+
+      if (!errors.isEmpty()) {
+        return response.status(400).json({ errors: errors.array() });
+      }
+
       const { email, password } = request.body;
 
       const userRepository = getRepository(User);
