@@ -4,13 +4,21 @@ import { RoomRepository } from '../repositories/RoomRepository';
 import { validationResult } from 'express-validator';
 
 class RoomController {
-  async index (request: Request, response: Response) {
+  async index(request: Request, response: Response) {
     const roomRepository = getCustomRepository(RoomRepository);
 
     try {
       const rooms = await roomRepository.fetchAll();
 
-      return response.status(200).json({ list: rooms });
+      const list = rooms.map(room => ({
+        id: room.id,
+        name: room.name,
+        status: room.status.name,
+        createdAt: room.createdAt,
+        updatedAt: room.updatedAt
+      }));
+
+      return response.status(200).json({ list });
     } catch (err) {
       /* istanbul ignore next */
       return response.status(400).json({
@@ -23,7 +31,7 @@ class RoomController {
     }
   }
 
-  async store (request: Request, response: Response) {
+  async store(request: Request, response: Response) {
     try {
       const errors = validationResult(request);
 
@@ -36,7 +44,7 @@ class RoomController {
       if (!request.authenticatedUser) {
         return response.status(400).json({
           error: {
-            code: '004',
+            code: '003',
             message: 'Usuário não atenticado'
           }
         });
@@ -44,14 +52,54 @@ class RoomController {
 
       const roomRepository = getCustomRepository(RoomRepository);
 
+      const roomExists = await roomRepository.findByName(name);
+
+      if (roomExists) {
+        return response.status(400).json({
+          error: {
+            code: '004',
+            message: 'Está sala já foi criada, por favor digite outro nome'
+          }
+        });
+      }
+
       await roomRepository.createAndSave(name, request.authenticatedUser.id);
 
       return response.status(200).json({ message: 'Sala criada com sucesso' });
     } catch (err) {
       return response.status(400).json({
         error: {
-          code: '003',
-          message: 'Erro ao criar nova sessão',
+          code: '005',
+          message: 'Erro ao criar uma nova sala',
+          err: err.message
+        }
+      });
+    }
+  }
+
+  async show(request: Request, response: Response) {
+    try {
+      const { id: roomId } = request.params;
+      const roomRepository = getCustomRepository(RoomRepository);
+
+      const room = await roomRepository.findById(roomId);
+
+      return response.status(200).json({
+        id: room?.id,
+        name: room?.name,
+        status: room?.status.name,
+        createdAt: room?.createdAt,
+        users: room?.users.map(user => ({
+          id: user.id,
+          name: user.name,
+          email: user.email
+        }))
+      });
+    } catch (err) {
+      return response.status(400).json({
+        error: {
+          code: '001',
+          message: 'Sala não encontrada',
           err: err.message
         }
       });

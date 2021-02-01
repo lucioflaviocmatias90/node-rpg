@@ -1,12 +1,13 @@
 /* eslint-disable no-undef */
 import '../utils/env';
-import request from 'supertest';
+import supertest from 'supertest';
 import app from '../app';
 import { UserFactory, UserDataFactory } from '../database/UserFactory';
 import { User } from '../app/models/User';
 import Database from '../database/connection';
 
 const database = Database.getInstance();
+const request = supertest(app);
 
 beforeAll(async () => {
   await database.connect();
@@ -24,7 +25,7 @@ describe('POST /sessions', () => {
   it('should to create a new session', async () => {
     const newUser = await createUser();
 
-    const response = await request(app).post('/sessions').send({
+    const response = await request.post('/sessions').send({
       email: newUser.email,
       password: '123123'
     });
@@ -37,7 +38,7 @@ describe('POST /sessions', () => {
   it('should return error when send wrong password', async () => {
     const newUser = await createUser();
 
-    const response = await request(app).post('/sessions').send({
+    const response = await request.post('/sessions').send({
       email: newUser.email,
       password: '123456'
     });
@@ -51,7 +52,7 @@ describe('POST /sessions', () => {
   it('should return error when send non-existing email', async () => {
     await createUser();
 
-    const response = await request(app).post('/sessions').send({
+    const response = await request.post('/sessions').send({
       email: 'non_existing_email@email.com',
       password: '123123'
     });

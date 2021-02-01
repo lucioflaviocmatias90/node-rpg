@@ -4,7 +4,8 @@ import { store as RoomValidator } from '../app/requests/RoomRequest';
 
 const router = express.Router();
 
-router.get('/', RoomValidator, RoomController.index);
+router.get('/', RoomController.index);
 router.post('/', RoomValidator, RoomController.store);
+router.get('/:id', RoomController.show);
 
 export default router;

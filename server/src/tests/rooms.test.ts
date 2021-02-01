@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import '../utils/env';
-import request from 'supertest';
+import supertest from 'supertest';
 import app from '../app';
 import { UserFactory, UserDataFactory } from '../database/UserFactory';
 import { User } from '../app/models/User';
@@ -8,6 +8,7 @@ import Database from '../database/connection';
 import Auth from '../app/services/Auth';
 
 const database = Database.getInstance();
+const request = supertest(app);
 
 beforeAll(async () => {
   await database.connect();
@@ -23,10 +24,9 @@ beforeEach(async () => {
 
 describe('GET /rooms', () => {
   it('should to list all available rooms', async () => {
-    const newUser = await createUser();
-    const token = new Auth().sign(newUser.id);
+    const token = await createToken();
 
-    const response = await request(app)
+    const response = await request
       .get('/rooms')
       .set('Authorization', `bearer ${token}`);
 
@@ -38,10 +38,9 @@ describe('GET /rooms', () => {
 
 describe('POST /rooms', () => {
   it('should error when not sending required request body', async () => {
-    const newUser = await createUser();
-    const token = new Auth().sign(newUser.id);
+    const token = await createToken();
 
-    const response = await request(app)
+    const response = await request
       .post('/rooms')
       .set('Authorization', `bearer ${token}`)
       .send({});
@@ -54,7 +53,7 @@ describe('POST /rooms', () => {
   });
 });
 
-const createUser = async () => {
+const createToken = async () => {
   const userRepository = database.connection.getRepository(User);
   const userData = new UserFactory().make<UserDataFactory>();
 
@@ -66,5 +65,9 @@ const createUser = async () => {
     birthday: userData.birthday
   });
 
-  return await userRepository.save(user);
+  const newUser = await userRepository.save(user);
+
+  const token = new Auth().sign(newUser.id);
+
+  return token;
 };

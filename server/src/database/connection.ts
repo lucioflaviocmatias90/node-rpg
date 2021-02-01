@@ -40,9 +40,9 @@ export default class Database {
   async clear() {
     const entities = this.connection.entityMetadatas;
 
-    entities.forEach(async (entity) => {
+    await Promise.all(entities.map(async (entity) => {
       const repository = this.connection.getRepository(entity.name);
       await repository.query(`DELETE FROM ${entity.tableName}`);
-    });
+    }));
   }
 }
