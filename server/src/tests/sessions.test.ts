@@ -22,6 +22,18 @@ beforeEach(async () => {
 });
 
 describe('POST /sessions', () => {
+  it('should return error when not sending required params', async () => {
+    const response = await request.post('/sessions').send({});
+
+    const { errors } = response.body;
+
+    expect(response.status).toBe(400);
+    expect(errors).toHaveLength(3);
+    expect(errors[0]).toHaveProperty('location');
+    expect(errors[0]).toHaveProperty('msg');
+    expect(errors[0]).toHaveProperty('param');
+  });
+
   it('should to create a new session', async () => {
     const newUser = await createUser();
 

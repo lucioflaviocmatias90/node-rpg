@@ -48,7 +48,7 @@ describe('POST /rooms', () => {
     const { errors } = response.body;
 
     expect(errors).toEqual([
-      { msg: 'Invalid value', param: 'name', location: 'body' }
+      { msg: 'O campo name é obrigatório', param: 'name', location: 'body' }
     ]);
   });
 });

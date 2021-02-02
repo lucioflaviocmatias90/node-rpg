@@ -19,8 +19,6 @@ export class RoomRepository extends AbstractRepository<Room> {
       throw new ModelNotFound('Sala não encontrada');
     }
 
-    console.log('room', room);
-
     return room;
   }
 

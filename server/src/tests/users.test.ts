@@ -24,13 +24,16 @@ beforeEach(async () => {
 
 describe('GET /users', () => {
   it('get all users', async () => {
-    const response = await request.get('/users');
-    // const newUser = await new UserFactory().create<User>();
-    // console.log('newUser', newUser.id);
+    const newUser = await createUser();
 
-    // const { list } = response.body;
+    const response = await request.get('/users');
+
+    const { list } = response.body;
 
     expect(response.status).toBe(200);
+    expect(list[0].id).toBe(newUser.id);
+    expect(list[0].name).toBe(newUser.name);
+    expect(list[0].email).toBe(newUser.email);
   });
 });
 
@@ -41,10 +44,8 @@ describe('POST /users', () => {
     const { errors } = response.body;
 
     expect(response.status).toBe(400);
-    expect(errors).toHaveLength(10);
+    expect(errors).toHaveLength(9);
     expect(errors[0]).toHaveProperty('msg');
-    expect(errors[0]).toHaveProperty('param');
-    expect(errors[0]).toHaveProperty('location');
   });
 
   it('should return error when existing user with same email', async () => {
