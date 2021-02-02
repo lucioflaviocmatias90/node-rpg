@@ -1,10 +1,10 @@
 module.exports = {
   clearMocks: true,
-  rootDir: '.',
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+  rootDir: "./src",
+  preset: "ts-jest",
+  testEnvironment: "node",
   collectCoverage: true,
-  collectCoverageFrom: ['./src/app/controllers/**/*.ts'],
-  coverageDirectory: './src/tests/coverage',
-  testMatch: ['<rootDir>/src/tests/**/*.ts']
+  collectCoverageFrom: ["<rootDir>/app/controllers/**/*.ts"],
+  coverageDirectory: "<rootDir>/tests/coverage",
+  testMatch: ["<rootDir>/tests/**/*.test.ts"],
 };
