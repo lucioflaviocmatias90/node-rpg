@@ -9,7 +9,7 @@ class UserController {
       const userRepository = getRepository(User);
       const users = await userRepository.find();
 
-      const list = users.map(user => ({
+      const list = users.map((user) => ({
         id: user.id,
         name: user.name,
         email: user.email,

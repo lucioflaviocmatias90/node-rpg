@@ -50,19 +50,15 @@ export class Room {
   }
 
   // Relationships
-  @ManyToMany(() => User, user => user.rooms)
+  @ManyToMany(() => User, (user) => user.rooms)
   @JoinTable({
     name: 'user_room',
-    joinColumns: [
-      { name: 'room_id' }
-    ],
-    inverseJoinColumns: [
-      { name: 'user_id' }
-    ]
+    joinColumns: [{ name: 'room_id' }],
+    inverseJoinColumns: [{ name: 'user_id' }]
   })
-  users!: User[]
+  users!: User[];
 
   @OneToOne(() => StatusRoom)
   @JoinColumn({ name: 'status_room_id', referencedColumnName: 'id' })
-  status!: StatusRoom
+  status!: StatusRoom;
 }

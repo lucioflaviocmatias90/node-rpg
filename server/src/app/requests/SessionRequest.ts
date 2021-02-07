@@ -1,9 +1,7 @@
 import { body } from 'express-validator';
 
 export const store = [
-  body('email')
-    .isEmail()
-    .withMessage('Email inválido'),
+  body('email').isEmail().withMessage('Email inválido'),
 
   body('password')
     .notEmpty()

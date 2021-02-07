@@ -4,9 +4,10 @@ import { readFileSync } from 'fs';
 
 dotenv.config();
 
-const envPath = process.env.NODE_ENV === 'testing'
-  ? join(__dirname, '..', '..', '.env.testing')
-  : join(__dirname, '..', '..', '.env');
+const envPath =
+  process.env.NODE_ENV === 'testing'
+    ? join(__dirname, '..', '..', '.env.testing')
+    : join(__dirname, '..', '..', '.env');
 
 const envConfig = dotenv.parse(readFileSync(envPath));
 

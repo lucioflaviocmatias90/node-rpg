@@ -7,7 +7,7 @@ export default class Database {
   private static instance: Database;
   public connection!: Connection;
 
-  private constructor() { }
+  private constructor() {}
 
   public static getInstance() {
     if (!this.instance) {
@@ -40,9 +40,11 @@ export default class Database {
   async clear() {
     const entities = this.connection.entityMetadatas;
 
-    await Promise.all(entities.map(async (entity) => {
-      const repository = this.connection.getRepository(entity.name);
-      await repository.query(`DELETE FROM ${entity.tableName}`);
-    }));
+    await Promise.all(
+      entities.map(async (entity) => {
+        const repository = this.connection.getRepository(entity.name);
+        await repository.query(`DELETE FROM ${entity.tableName}`);
+      })
+    );
   }
 }

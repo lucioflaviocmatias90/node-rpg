@@ -66,15 +66,11 @@ export class User {
   }
 
   // Relationships
-  @ManyToMany(() => Room, room => room.users)
+  @ManyToMany(() => Room, (room) => room.users)
   @JoinTable({
     name: 'user_room',
-    joinColumns: [
-      { name: 'user_id' }
-    ],
-    inverseJoinColumns: [
-      { name: 'room_id' }
-    ]
+    joinColumns: [{ name: 'user_id' }],
+    inverseJoinColumns: [{ name: 'room_id' }]
   })
-  rooms!: Room[]
+  rooms!: Room[];
 }

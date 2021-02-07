@@ -4,7 +4,9 @@ import { getRepository } from 'typeorm';
 import Auth from '../services/Auth';
 
 export default async (
-  request: Request, response: Response, next: NextFunction
+  request: Request,
+  response: Response,
+  next: NextFunction
 ) => {
   const header: string | undefined = request.header('authorization');
 

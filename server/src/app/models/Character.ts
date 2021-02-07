@@ -72,17 +72,17 @@ export class Character {
 
   // Hooks
   @BeforeInsert()
-  generateUuid () {
+  generateUuid() {
     this.id = uuidv4();
   }
 
   @BeforeInsert()
-  createDates () {
+  createDates() {
     this.createdAt = new Date();
   }
 
   @BeforeInsert()
-  updateDates () {
+  updateDates() {
     this.updatedAt = new Date();
   }
 }

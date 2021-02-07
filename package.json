@@ -9,7 +9,7 @@
     "commit": "cz",
     "dev:server": "cd ./server && yarn dev",
     "test:server": "cd ./server && yarn test",
-    "dev:migrations": "cd ./server && yarn knex migrate:rollback --all --env=development && yarn knex migrate:latest --env=development",
+    "dev:migrations": "cd ./server && yarn knex migrate:rollback --all --env=development && yarn knex migrate:latest --env=development && yarn knex seed:run --env=development",
     "test:migrations": "cd ./server && yarn knex migrate:rollback --all --env=testing && yarn knex migrate:latest --env=testing"
   },
   "private": true,

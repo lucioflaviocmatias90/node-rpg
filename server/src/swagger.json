@@ -21,9 +21,7 @@
   "paths": {
     "/users": {
       "get": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "List all users",
         "parameters": [
           {
@@ -63,9 +61,7 @@
         }
       },
       "post": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Create a user",
         "requestBody": {
           "description": "user to add to the system",
@@ -100,13 +96,7 @@
                     "example": "1970-12-27"
                   }
                 },
-                "required": [
-                  "name",
-                  "email",
-                  "password",
-                  "gender",
-                  "birthday"
-                ]
+                "required": ["name", "email", "password", "gender", "birthday"]
               },
               "examples": {
                 "user": {
@@ -170,9 +160,7 @@
     },
     "/users/{userId}": {
       "delete": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Destroy for a specific user",
         "parameters": [
           {
@@ -215,9 +203,7 @@
     },
     "/sessions": {
       "post": {
-        "tags": [
-          "sessions"
-        ],
+        "tags": ["sessions"],
         "summary": "Create a new session",
         "requestBody": {
           "description": "Send credentials to create a new session",
@@ -237,10 +223,7 @@
                     "example": "123123"
                   }
                 },
-                "required": [
-                  "email",
-                  "password"
-                ]
+                "required": ["email", "password"]
               },
               "examples": {
                 "user": {
@@ -285,9 +268,7 @@
     },
     "/rooms": {
       "get": {
-        "tags": [
-          "rooms"
-        ],
+        "tags": ["rooms"],
         "summary": "List all available rooms",
         "parameters": [
           {
@@ -332,9 +313,7 @@
         }
       },
       "post": {
-        "tags": [
-          "rooms"
-        ],
+        "tags": ["rooms"],
         "summary": "Create a new session",
         "requestBody": {
           "description": "Send credentials to create a new session",
@@ -354,10 +333,7 @@
                     "example": "123123"
                   }
                 },
-                "required": [
-                  "email",
-                  "password"
-                ]
+                "required": ["email", "password"]
               },
               "examples": {
                 "user": {

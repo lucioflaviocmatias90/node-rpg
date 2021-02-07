@@ -35,7 +35,8 @@ class SessionController {
         return response.status(400).json({
           error: {
             code: '002',
-            message: 'Email ou senha inválido'
+            message: 'Email ou senha inválido',
+            result
           }
         });
       }

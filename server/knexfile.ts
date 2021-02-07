@@ -1,5 +1,4 @@
 export default {
-
   development: {
     client: 'postgresql',
     connection: {
@@ -17,7 +16,8 @@ export default {
       directory: './src/database/migrations'
     },
     seeds: {
-      directory: './src/database/seeds'
+      directory: './src/database/seeds',
+      extension: 'ts'
     }
   },
 
@@ -55,5 +55,4 @@ export default {
       tableName: 'migrations_table'
     }
   }
-
 };

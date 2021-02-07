@@ -10,7 +10,7 @@ class RoomController {
     try {
       const rooms = await roomRepository.fetchAll();
 
-      const list = rooms.map(room => ({
+      const list = rooms.map((room) => ({
         id: room.id,
         name: room.name,
         status: room.status.name,
@@ -89,7 +89,7 @@ class RoomController {
         name: room?.name,
         status: room?.status.name,
         createdAt: room?.createdAt,
-        users: room?.users.map(user => ({
+        users: room?.users.map((user) => ({
           id: user.id,
           name: user.name,
           email: user.email

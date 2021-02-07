@@ -8,9 +8,7 @@ export const store = [
     .notEmpty()
     .withMessage(Message.notEmpty('name')),
 
-  body('email')
-    .isEmail()
-    .withMessage(Message.isEmail('email')),
+  body('email').isEmail().withMessage(Message.isEmail('email')),
 
   body('password')
     .notEmpty()
@@ -26,8 +24,5 @@ export const store = [
     .isIn(['masculino', 'feminino'])
     .withMessage('O campo gender deve ser masculino ou feminino'),
 
-  body('birthday')
-    .isString()
-    .withMessage(Message.isString('birthday'))
-
+  body('birthday').isString().withMessage(Message.isString('birthday'))
 ];

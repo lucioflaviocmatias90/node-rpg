@@ -1,11 +1,12 @@
 import * as Knex from 'knex';
 
-export async function up (knex: Knex): Promise<void> {
-  return knex.schema.createTable('classes', table => {
-    table.uuid('id').primary();
-    table.string('name');
-    table.timestamps();
-  })
+export async function up(knex: Knex): Promise<void> {
+  return knex.schema
+    .createTable('classes', (table) => {
+      table.uuid('id').primary();
+      table.string('name');
+      table.timestamps();
+    })
     .then(() => {
       const data = [
         {
@@ -62,6 +63,6 @@ export async function up (knex: Knex): Promise<void> {
     });
 }
 
-export async function down (knex: Knex): Promise<void> {
+export async function down(knex: Knex): Promise<void> {
   return knex.schema.dropTable('classes');
 }

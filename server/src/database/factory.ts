@@ -6,23 +6,23 @@ export class Factory {
   public _data: any;
   public _model: any;
 
-  public constructor () {
+  public constructor() {
     this.faker = faker;
   }
 
-  get data () {
+  get data() {
     return this._data;
   }
 
-  get model () {
+  get model() {
     return this._model;
   }
 
-  public make<T> (data?: T): T {
+  public make<T>(data?: T): T {
     return { ...this.data, ...data };
   }
 
-  public makeMany<T> (length: number = 1, data?: T): Array<T> {
+  public makeMany<T>(length: number = 1, data?: T): Array<T> {
     const manyData = [];
 
     for (let index = length; index > 0; index--) {
@@ -32,7 +32,7 @@ export class Factory {
     return manyData;
   }
 
-  public async create (data?: any) {
+  public async create(data?: any) {
     const repository = getRepository(this.model);
 
     const entity = repository.create({ ...this.data, ...data });
@@ -40,7 +40,7 @@ export class Factory {
     return await repository.save(entity);
   }
 
-  public async createMany (length: number = 1, data?: any) {
+  public async createMany(length: number = 1, data?: any) {
     const repository = getRepository(this.model);
 
     const manyData = [];

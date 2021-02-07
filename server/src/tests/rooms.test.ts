@@ -57,9 +57,7 @@ describe('POST /rooms', () => {
   });
 
   it('should error when user trying access not authorized', async () => {
-    const response = await request
-      .post('/rooms')
-      .send({});
+    const response = await request.post('/rooms').send({});
 
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
