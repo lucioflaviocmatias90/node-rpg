@@ -10,7 +10,8 @@
     "dev:server": "cd ./server && yarn dev",
     "test:server": "cd ./server && yarn test",
     "dev:migrations": "cd ./server && yarn knex migrate:rollback --all --env=development && yarn knex migrate:latest --env=development && yarn knex seed:run --env=development",
-    "test:migrations": "cd ./server && yarn knex migrate:rollback --all --env=testing && yarn knex migrate:latest --env=testing"
+    "test:migrations": "cd ./server && yarn knex migrate:rollback --all --env=testing && yarn knex migrate:latest --env=testing",
+    "lint": "cd ./server && yarn prettier --write ./src"
   },
   "private": true,
   "devDependencies": {
@@ -23,7 +24,8 @@
   "husky": {
     "hooks": {
       "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "yarn lint"
     }
   },
   "config": {
