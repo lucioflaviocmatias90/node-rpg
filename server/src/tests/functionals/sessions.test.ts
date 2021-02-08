@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
-import '../utils/env';
+import '../../utils/env';
 import supertest from 'supertest';
-import app from '../app';
-import { UserFactory, UserDataFactory } from '../database/UserFactory';
-import { User } from '../app/models/User';
-import Database from '../database/connection';
+import app from '../../app';
+import { UserFactory, UserDataFactory } from '../../database/UserFactory';
+import { User } from '../../app/models/User';
+import Database from '../../database/connection';
 
 const database = Database.getInstance();
 const request = supertest(app);
