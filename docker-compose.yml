@@ -1,4 +1,4 @@
-version: '3.1'
+version: "3.1"
 
 networks:
   node-rpg-network:
@@ -46,9 +46,9 @@ services:
     image: sentry:latest
     container_name: node-rpg-sentry
     depends_on:
-     - db
+      - db
     ports:
-     - 9000:9000
+      - 9000:9000
     environment:
       SENTRY_SECRET_KEY: verysecret
       SENTRY_POSTGRES_HOST: db
@@ -57,3 +57,23 @@ services:
       SENTRY_REDIS_HOST: redis
     networks:
       - node-rpg-network
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    container_name: node-rpg-swagger-ui
+    environment:
+      - SWAGGER_JSON=/app/swagger.yml
+    volumes:
+      - ./:/app
+    ports:
+      - "8080:8080"
+
+  swagger-editor:
+    image: swaggerapi/swagger-editor
+    container_name: node-rpg-swagger-editor
+    environment:
+      - SWAGGER_JSON=/app/swagger.yml
+    volumes:
+      - ./:/app
+    ports:
+      - "8081:8080"
