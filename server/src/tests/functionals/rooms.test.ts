@@ -7,6 +7,7 @@ import { User } from '../../app/models/User';
 import Database from '../../database/connection';
 import Auth from '../../app/services/Auth';
 import { Room } from '../../app/models/Room';
+import { StatusRoom } from '../../app/models/StatusRoom';
 
 const database = Database.getInstance();
 const request = supertest(app);
@@ -59,7 +60,7 @@ describe('POST /rooms', () => {
   it('should error when user trying access not authorized', async () => {
     const response = await request.post('/rooms').send({});
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(401);
     expect(response.body).toEqual({
       error: {
         code: '098',
@@ -81,8 +82,8 @@ describe('POST /rooms', () => {
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
       error: {
-        code: '098',
-        message: 'Usuário sem permissão de acesso.'
+        code: '004',
+        message: 'Está sala já foi criada, por favor digite outro nome'
       }
     });
   });
@@ -111,10 +112,23 @@ const createUser = async () => {
   return await userRepository.save(user);
 };
 
+const createStatusRoom = async (name: string) => {
+  const statusRoomRepository = database.connection.getRepository(StatusRoom);
+
+  const statusRoomRepositoryData = statusRoomRepository.create({ name: name });
+
+  return await statusRoomRepository.save(statusRoomRepositoryData);
+};
+
 const createRoom = async (name: string) => {
   const roomRepository = database.connection.getRepository(Room);
 
-  const room = roomRepository.create({ name: name });
+  const statusRoom = await createStatusRoom('ABERTA');
+
+  const room = roomRepository.create({
+    name: name,
+    statusRoomId: statusRoom.id
+  });
 
   return await roomRepository.save(room);
 };

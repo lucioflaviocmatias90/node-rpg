@@ -11,7 +11,7 @@ export default async (
   const header: string | undefined = request.header('authorization');
 
   if (!header) {
-    return response.status(400).json({
+    return response.status(401).json({
       error: {
         code: '098',
         message: 'Usuário sem permissão de acesso.'
@@ -22,7 +22,7 @@ export default async (
   const [, token]: string[] = header.split(' ');
 
   if (!token) {
-    return response.status(400).json({
+    return response.status(401).json({
       error: {
         code: '099',
         message: 'Usuário sem permissão de acesso.'
@@ -33,7 +33,7 @@ export default async (
   const userId = await new Auth().verify(token);
 
   if (typeof userId === 'object') {
-    return response.status(400).json({
+    return response.status(401).json({
       error: {
         code: '100',
         message: 'Usuário sem permissão de acesso.'
@@ -43,7 +43,7 @@ export default async (
 
   const userRepository = getRepository(User);
 
-  request.authenticatedUser = await userRepository.findOne(userId);
+  request.body.authenticatedUser = await userRepository.findOne(userId);
 
   next();
 };

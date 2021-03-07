@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { RoomRepository } from '../repositories/RoomRepository';
 import { validationResult } from 'express-validator';
+import { User } from '../models/User';
 
 class RoomController {
   async index(request: Request, response: Response) {
@@ -39,16 +40,10 @@ class RoomController {
         return response.status(400).json({ errors: errors.array() });
       }
 
-      const { name } = request.body;
-
-      if (!request.authenticatedUser) {
-        return response.status(400).json({
-          error: {
-            code: '003',
-            message: 'Usuário não atenticado'
-          }
-        });
-      }
+      const {
+        name,
+        authenticatedUser
+      }: { name: string; authenticatedUser: User } = request.body;
 
       const roomRepository = getCustomRepository(RoomRepository);
 
@@ -63,7 +58,7 @@ class RoomController {
         });
       }
 
-      await roomRepository.createAndSave(name, request.authenticatedUser.id);
+      await roomRepository.createAndSave(name, authenticatedUser.id);
 
       return response.status(200).json({ message: 'Sala criada com sucesso' });
     } catch (err) {

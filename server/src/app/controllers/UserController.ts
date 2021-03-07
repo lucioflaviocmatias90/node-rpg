@@ -63,7 +63,7 @@ class UserController {
 
       await userRepository.save(user);
 
-      return response.status(200).json({
+      return response.status(201).json({
         message: 'Usuário criado com sucesso'
       });
     } catch (err) {

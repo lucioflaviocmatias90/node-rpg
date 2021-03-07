@@ -73,7 +73,7 @@ describe('POST /users', () => {
 
     const { message } = response.body;
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(201);
     expect(message).toBe('Usuário criado com sucesso');
   });
 });

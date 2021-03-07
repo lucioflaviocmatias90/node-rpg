@@ -9,45 +9,209 @@ info:
   license:
     name: MIT
 servers:
-  - url: 'http://localhost:3333'
+  - url: "http://localhost:3333"
     description: Development Server
 paths:
-  /users:
+  /rooms:
     get:
-      tags:
-        - users
-      summary: List all users
-      parameters:
-        - name: limit
-          in: query
-          description: How many items to return at one time (max 100)
-          required: false
-          schema:
-            type: integer
-            format: int32
+      summary: List all available rooms
       responses:
-        '200':
-          description: A paged array of users
+        "200":
+          description: Successful
           content:
             application/json:
               example:
                 list:
-                  - id: 0c3b2f3e-f5a5-4897-9121-98e68fcc0ebc
-                    name: Fulano Ciclano
-                    email: fulano@email.com
-                    password: >-
-                      $2b$12$YjRIZCxmdZPhBQYHtZvdQOx8vV8oMVpUmmIO0xd6inVvES21YDfIe
-                    gender: fulano@email.com
-                    birthday: fulano@email.com
-                    createdAt: '2021-01-04T20:29:55.984Z'
-                    updatedAt: '2021-01-04T20:29:55.984Z'
-                    deletedAt: null
+                  - id: 93f6541f-365e-4747-86ef-6e4db67bd17c
+                    name: Masmorra da Morte Sombria
+                    statusRoomId: f891cb29-2b75-4781-99e4-4550d20fda67
+                    createdAt: "2021-01-04T23:58:45.741Z"
+                    updatedAt: "2021-01-04T23:58:45.741Z"
+        "400":
+          description: An occurred erro when list rooms
+          content:
+            application/json:
+              example:
+                error:
+                  code: "001"
+                  message: Erro ao encontrar as salas
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      tags:
+        - rooms
+      security:
+        - bearerAuth: []
     post:
+      summary: Create a new room
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  description: The name of room to create
+                  type: string
+                  example: A sala secreta de Izengard
+              required:
+                - name
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              example: |-
+                {
+                  "message": "Sala criada com sucesso"
+                }
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                not send required parameters:
+                  value: |-
+                    {
+                      "errors": [
+                        {
+                          "msg": "O campo name é obrigatório",
+                          "param": "name",
+                          "location": "body"
+                        }
+                      ]
+                    }
+                already exists room:
+                  value: |-
+                    {
+                      "error": {
+                        "code": "004",
+                        "message": "Está sala já foi criada, por favor digite outro nome"
+                      }
+                    }
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+      tags:
+        - rooms
+      security:
+        - bearerAuth: []
+
+  /sessions:
+    post:
+      summary: Create a new session
+      requestBody:
+        description: Send credentials to create a new session
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  description: Updated valid email of the user
+                  type: string
+                  example: lucio@email.com
+                password:
+                  description: Updated password with min 6 characters of the user
+                  type: string
+                  example: "123123"
+              required:
+                - email
+                - password
+        required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              example:
+                userId: 8376f771-0eb7-43cb-b5aa-ddbb4e87c04e
+                token: >-
+                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiODM3NmY3NzEtMGViNy00M2NiLWI1YWEtZGRiYjRlODdjMDRlIiwiaWF0IjoxNjA5ODU4ODEzLCJleHAiOjE2MDk4NjI0MTN9.jXqvcWJxoSO0mri_-_ZCAc368i97UDyVa3-vkx7bcAU
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              examples:
+                not send required parameters:
+                  value: |-
+                    {
+                      "errors": [
+                        {
+                          "value": "",
+                          "msg": "Email inválido",
+                          "param": "email",
+                          "location": "body"
+                        },
+                        {
+                          "value": "",
+                          "msg": "O campo email é obrigatório",
+                          "param": "password",
+                          "location": "body"
+                        },
+                        {
+                          "value": "",
+                          "msg": "O campo password deve ter no mínimo 6 caracteres e máximo 6 caractereces",
+                          "param": "password",
+                          "location": "body"
+                        }
+                      ]
+                    }
+                email already exists:
+                  value: |-
+                    {
+                      "error": {
+                        "code": "001",
+                        "message": "Email ou senha inválido"
+                      }
+                    }
+                wrong password:
+                  value: |-
+                    {
+                      "error": {
+                        "code": "002",
+                        "message": "Email ou senha inválido"
+                      }
+                    }
+                get generic error on server:
+                  value: |-
+                    {
+                      "error": {
+                        "code": "003",
+                        "message": "Erro ao criar nova sessão",
+                        "err": "Any dispatched exception"
+                      }
+                    }
+      tags:
+        - sessions
+
+  /users:
+    get:
+      summary: List all users
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              example: |-
+                {
+                  "list": [
+                    {
+                      "id": "25c45c27-1260-4ea7-89ab-ca57873dd6d2",
+                      "name": "Lucio Flavio C. Matias",
+                      "email": "lucio@email.com",
+                      "gender": "masculino",
+                      "birthday": "1990-03-12",
+                      "createdAt": "2021-03-07T00:28:13.739Z",
+                      "updatedAt": "2021-03-07T00:28:13.739Z"
+                    }
+                  ]
+                }
       tags:
         - users
-      summary: Create a user
+    post:
+      summary: Create a new user
       requestBody:
-        description: user to add to the system
+        description: Create a new user
         content:
           application/json:
             schema:
@@ -64,7 +228,7 @@ paths:
                 password:
                   description: Updated password with min 6 characters of the user
                   type: string
-                  example: '123123'
+                  example: "123123"
                 gender:
                   description: Updated gender of the user
                   type: string
@@ -72,202 +236,132 @@ paths:
                 birthday:
                   description: Updated birthday of the user
                   type: string
-                  example: '1970-12-27'
+                  example: "1970-12-27"
               required:
                 - name
                 - email
                 - password
                 - gender
                 - birthday
-            examples:
-              user:
-                summary: All completed user data
-                value:
-                  name: Fulano Ciclano
-                  email: fulano@email.com
-                  password: '123123'
-                  gender: fulano@email.com
-                  birthday: fulano@email.com
-              user2:
-                summary: Not completed user data
-                value:
-                  name: Beltrano Ciclano
-                  email: beltrano@email.com
         required: true
       responses:
-        '200':
-          description: Successful
+        "201":
+          description: Created
           content:
             application/json:
-              example:
-                user:
-                  id: 0c3b2f3e-f5a5-4897-9121-98e68fcc0ebc
-                  name: Fulano Ciclano
-                  email: fulano@email.com
-                  password: $2b$12$YjRIZCxmdZPhBQYHtZvdQOx8vV8oMVpUmmIO0xd6inVvES21YDfIe
-                  gender: fulano@email.com
-                  birthday: fulano@email.com
-                  createdAt: '2021-01-04T20:29:55.984Z'
-                  updatedAt: '2021-01-04T20:29:55.984Z'
-                  deletedAt: null
-        '400':
-          description: User already exists
+              example: |-
+                {
+                  "message": "Usuário criado com sucesso"
+                }
+        "400":
+          description: Bad Request
           content:
             application/json:
-              example:
-                error:
-                  code: '001'
-                  message: Email em uso
-  '/users/{userId}':
-    delete:
+              examples:
+                not send required parameters:
+                  value: |-
+                    {
+                      "errors": [
+                        {
+                          "value": "",
+                          "msg": "O campo name é obrigatório",
+                          "param": "name",
+                          "location": "body"
+                        },
+                        {
+                          "value": "",
+                          "msg": "O campo email deve ser uma email válido",
+                          "param": "email",
+                          "location": "body"
+                        },
+                        {
+                          "value": "",
+                          "msg": "O campo password é obrigatório",
+                          "param": "password",
+                          "location": "body"
+                        },
+                        {
+                          "value": "",
+                          "msg": "O campo password deve ter no mínimo 6 caracteres e máximo 6 caracteres",
+                          "param": "password",
+                          "location": "body"
+                        },
+                        {
+                          "value": "",
+                          "msg": "O campo gender deve ser masculino ou feminino",
+                          "param": "gender",
+                          "location": "body"
+                        }
+                      ]
+                    }
+                user already exists:
+                  value: |-
+                    {
+                      "error": {
+                        "code": "001",
+                        "message": "Email em uso"
+                      }
+                    }
+                get generic error on server:
+                  value: |-
+                    {
+                      "error": {
+                        "code": "001",
+                        "message": "Email em uso",
+                        "err": "Any dispatched exception"
+                      }
+                    }
       tags:
         - users
-      summary: Destroy for a specific user
+  /users/{userId}:
+    delete:
+      summary: Delete a specific user
       parameters:
         - name: userId
           in: path
           required: true
-          description: The id of the user to retrieve
+          description: The id of the user to delete
           schema:
             type: string
       responses:
-        '200':
-          description: Expected response to a valid request
+        "200":
+          description: Ok
           content:
             application/json:
-              example:
-                message: Usuário excluído com sucesso
-        '400':
-          description: User not exists
+              example: |-
+                {
+                  "message": "Usuário excluído com sucesso"
+                }
+        "400":
+          description: Bad Request
           content:
             application/json:
-              example:
-                error:
-                  code: '002'
-                  message: Erro ao excluir o usuário
-                  err: >-
-                    invalid input syntax for type uuid:
-                    "c3b2f3e-f5a5-4897-9121-98e68fcc0ebc"
-  /sessions:
-    post:
+              examples:
+                send invalid userId:
+                  value: |-
+                    {
+                      "error": {
+                        "code": "001",
+                        "message": "Usuário não encontrado"
+                      }
+                    }
+                user not exists:
+                  value:
+                    error:
+                      code: "002"
+                      message: Erro ao excluir o usuário
+                      err: >-
+                        invalid input syntax for type uuid:
+                        "c3b2f3e-f5a5-4897-9121-98e68fcc0ebc"
       tags:
-        - sessions
-      summary: Create a new session
-      requestBody:
-        description: Send credentials to create a new session
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  description: Updated valid email of the user
-                  type: string
-                  example: lucio@email.com
-                password:
-                  description: Updated password with min 6 characters of the user
-                  type: string
-                  example: '123123'
-              required:
-                - email
-                - password
-            examples:
-              user:
-                summary: All completed user data
-                value:
-                  email: fulano@email.com
-                  password: '123123'
-        required: true
-      responses:
-        '200':
-          description: Successful
-          content:
-            application/json:
-              example:
-                userId: 8376f771-0eb7-43cb-b5aa-ddbb4e87c04e
-                token: >-
-                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiODM3NmY3NzEtMGViNy00M2NiLWI1YWEtZGRiYjRlODdjMDRlIiwiaWF0IjoxNjA5ODU4ODEzLCJleHAiOjE2MDk4NjI0MTN9.jXqvcWJxoSO0mri_-_ZCAc368i97UDyVa3-vkx7bcAU
-        '400':
-          description: User already exists
-          content:
-            application/json:
-              example:
-                error:
-                  code: '001'
-                  message: Email ou senha inválido
-  /rooms:
-    get:
-      tags:
-        - rooms
-      summary: List all available rooms
-      parameters:
-        - name: Authorization
-          in: header
-          required: true
-          description: Authentication Bearer Token
-      responses:
-        '200':
-          description: Successful
-          content:
-            application/json:
-              example:
-                list:
-                  - id: 93f6541f-365e-4747-86ef-6e4db67bd17c
-                    name: Masmorra da Morte Sombria
-                    statusRoomId: f891cb29-2b75-4781-99e4-4550d20fda67
-                    createdAt: '2021-01-04T23:58:45.741Z'
-                    updatedAt: '2021-01-04T23:58:45.741Z'
-        '400':
-          description: An occurred erro when list rooms
-          content:
-            application/json:
-              example:
-                error:
-                  code: '001'
-                  message: Erro ao encontrar as salas
-    post:
-      tags:
-        - rooms
-      summary: Create a new session
-      requestBody:
-        description: Send credentials to create a new session
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  description: Updated valid email of the user
-                  type: string
-                  example: lucio@email.com
-                password:
-                  description: Updated password with min 6 characters of the user
-                  type: string
-                  example: '123123'
-              required:
-                - email
-                - password
-            examples:
-              user:
-                summary: All completed user data
-                value:
-                  email: fulano@email.com
-                  password: '123123'
-        required: true
-      responses:
-        '200':
-          description: Successful
-          content:
-            application/json:
-              example:
-                userId: 8376f771-0eb7-43cb-b5aa-ddbb4e87c04e
-                token: >-
-                  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiODM3NmY3NzEtMGViNy00M2NiLWI1YWEtZGRiYjRlODdjMDRlIiwiaWF0IjoxNjA5ODU4ODEzLCJleHAiOjE2MDk4NjI0MTN9.jXqvcWJxoSO0mri_-_ZCAc368i97UDyVa3-vkx7bcAU
-        '400':
-          description: User already exists
-          content:
-            application/json:
-              example:
-                error:
-                  code: '001'
-                  message: Email ou senha inválido
+        - users
+
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
