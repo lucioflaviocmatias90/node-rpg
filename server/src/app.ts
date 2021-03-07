@@ -1,8 +1,6 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from './swagger.json';
 import routes from './routes';
 
 class App {
@@ -23,11 +21,6 @@ class App {
 
   private routes() {
     this.app.use(routes);
-    this.app.use(
-      '/api-docs',
-      swaggerUi.serve,
-      swaggerUi.setup(swaggerDocument)
-    );
   }
 }
 

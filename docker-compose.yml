@@ -42,22 +42,6 @@ services:
     networks:
       - node-rpg-network
 
-  sentry:
-    image: sentry:latest
-    container_name: node-rpg-sentry
-    depends_on:
-      - db
-    ports:
-      - 9000:9000
-    environment:
-      SENTRY_SECRET_KEY: verysecret
-      SENTRY_POSTGRES_HOST: db
-      SENTRY_DB_USER: docker
-      SENTRY_DB_PASSWORD: docker
-      SENTRY_REDIS_HOST: redis
-    networks:
-      - node-rpg-network
-
   swagger-ui:
     image: swaggerapi/swagger-ui
     container_name: node-rpg-swagger-ui
