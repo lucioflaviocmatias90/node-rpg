@@ -2,8 +2,7 @@
 import '../../utils/env';
 import supertest from 'supertest';
 import app from '../../app';
-import { UserFactory, UserDataFactory } from '../../database/UserFactory';
-import { User } from '../../app/models/User';
+import { UserFactory } from '../../database/factories/UserFactory';
 import Database from '../../database/connection';
 
 const database = Database.getInstance();
@@ -35,7 +34,7 @@ describe('POST /sessions', () => {
   });
 
   it('should to create a new session', async () => {
-    const newUser = await createUser();
+    const newUser = await new UserFactory().create();
 
     const response = await request.post('/sessions').send({
       email: newUser.email,
@@ -48,7 +47,7 @@ describe('POST /sessions', () => {
   });
 
   it('should return error when send wrong password', async () => {
-    const newUser = await createUser();
+    const newUser = await new UserFactory().create();
 
     const response = await request.post('/sessions').send({
       email: newUser.email,
@@ -62,8 +61,6 @@ describe('POST /sessions', () => {
   });
 
   it('should return error when send non-existing email', async () => {
-    await createUser();
-
     const response = await request.post('/sessions').send({
       email: 'non_existing_email@email.com',
       password: '123123'
@@ -75,12 +72,3 @@ describe('POST /sessions', () => {
     expect(error.message).toBe('Email ou senha inválido');
   });
 });
-
-const createUser = async () => {
-  const userRepository = database.connection.getRepository(User);
-  const userData = new UserFactory().make<UserDataFactory>();
-
-  const user = userRepository.create(userData);
-
-  return await userRepository.save(user);
-};

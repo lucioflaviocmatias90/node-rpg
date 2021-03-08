@@ -2,8 +2,7 @@
 import '../../utils/env';
 import supertest from 'supertest';
 import app from '../../app';
-import { UserFactory, UserDataFactory } from '../../database/UserFactory';
-import { User } from '../../app/models/User';
+import { UserFactory } from '../../database/factories/UserFactory';
 import Database from '../../database/connection';
 import { v4 as uuidV4 } from 'uuid';
 
@@ -24,7 +23,7 @@ beforeEach(async () => {
 
 describe('GET /users', () => {
   it('get all users', async () => {
-    const newUser = await createUser();
+    const newUser = await new UserFactory().create();
 
     const response = await request.get('/users');
 
@@ -49,8 +48,9 @@ describe('POST /users', () => {
   });
 
   it('should return error when existing user with same email', async () => {
-    const newUser = await createUser();
-    const userData = new UserFactory().make<UserDataFactory>();
+    const userFactory = new UserFactory();
+    const newUser = await userFactory.create();
+    const userData = userFactory.make();
 
     const response = await request.post('/users').send({
       name: userData.name,
@@ -68,7 +68,7 @@ describe('POST /users', () => {
   });
 
   it('should to create a new user', async () => {
-    const userData = new UserFactory().make<UserDataFactory>();
+    const userData = new UserFactory().make();
     const response = await request.post('/users').send(userData);
 
     const { message } = response.body;
@@ -80,7 +80,7 @@ describe('POST /users', () => {
 
 describe('DELETE /users', () => {
   it('should to exclude a specific user', async () => {
-    const newUser = await createUser();
+    const newUser = await new UserFactory().create();
 
     const response = await request.delete(`/users/${newUser.id}`);
 
@@ -114,18 +114,3 @@ describe('DELETE /users', () => {
     expect(error.message).toBe('Erro ao excluir o usuário');
   });
 });
-
-const createUser = async () => {
-  const userRepository = database.connection.getRepository(User);
-  const userData = new UserFactory().make<UserDataFactory>();
-
-  const user = userRepository.create({
-    name: userData.name,
-    password: '123123',
-    email: userData.email,
-    gender: userData.gender,
-    birthday: userData.birthday
-  });
-
-  return await userRepository.save(user);
-};

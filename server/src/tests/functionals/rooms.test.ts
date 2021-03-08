@@ -2,8 +2,7 @@
 import '../../utils/env';
 import supertest from 'supertest';
 import app from '../../app';
-import { UserFactory, UserDataFactory } from '../../database/UserFactory';
-import { User } from '../../app/models/User';
+import { UserFactory } from '../../database/factories/UserFactory';
 import Database from '../../database/connection';
 import Auth from '../../app/services/Auth';
 import { Room } from '../../app/models/Room';
@@ -90,26 +89,11 @@ describe('POST /rooms', () => {
 });
 
 const createToken = async () => {
-  const newUser = await createUser();
+  const newUser = await new UserFactory().create();
 
   const token = new Auth().sign(newUser.id);
 
   return token;
-};
-
-const createUser = async () => {
-  const userRepository = database.connection.getRepository(User);
-  const userData = new UserFactory().make<UserDataFactory>();
-
-  const user = userRepository.create({
-    name: userData.name,
-    password: '123123',
-    email: userData.email,
-    gender: userData.gender,
-    birthday: userData.birthday
-  });
-
-  return await userRepository.save(user);
 };
 
 const createStatusRoom = async (name: string) => {
